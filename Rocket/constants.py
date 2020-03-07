@@ -1,8 +1,0 @@
-import numpy as np
-MAX_GENERATION = 50
-GRAVITY = -9.8
-REFRESH_RATE = 0.1
-INIT_POSITION = np.array([0.0,0.0])
-WINDOW_SIZE = np.array([600, 600])
-ROCKET_SIZE = 10
-TARGET_POSITION = np.array([0.0, 500.0])
