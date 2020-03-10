@@ -1,10 +1,9 @@
 """
-
+This is the main code for the simple rocket example
 """
 from graphics import *
 from random import random
 
-from ga_rocket_example import config
 from ga_simple_rocket.config import *
 from ga_simple_rocket.functions import get_rocket_shape
 from simple_rocket.individual import Individual
@@ -13,8 +12,6 @@ from simple_rocket.individual import Individual
 win = GraphWin('Face', WINDOW_SIZE[0], WINDOW_SIZE[1])  # give title and dimensions
 
 ground_level = WINDOW_SIZE[1] - WIN_ADJUST
-
-REFRESH_RATE = 1 / config.TIME_INTERVALS
 population = []
 shapes = []
 
@@ -27,13 +24,13 @@ population[1].rocket.engine_force = 9.8
 population[2].rocket.engine_on = True
 population[2].rocket.engine_force = 14
 
-x = win.getWidth() / POPULATION_SIZE
+x = (win.getWidth() - 20) / POPULATION_SIZE
 for ind in population:
     ind.rocket.pos = START_HEIGHT
     shape = get_rocket_shape(ind.rocket.pos, Point(x, win.getHeight() - START_HEIGHT - WIN_ADJUST))
     shape.draw(win)
     shapes.append(shape)
-    x += win.getWidth() / POPULATION_SIZE
+    x += (win.getWidth() - 20) / POPULATION_SIZE
 
 
 t = 0
