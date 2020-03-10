@@ -30,6 +30,16 @@ class MyTestCase(unittest.TestCase):
         self.individual.rocket.acc = 0.00045
         self.assertTrue(self.individual.has_landed())
 
+    def test_rocket_reaches_max_height(self):
+        t = 0
+        self.individual.commands = [1]*100
+        self.individual.rocket.engine_force = 40
+        while t < 100:
+            self.individual.update(t)
+            if (self.individual.has_failed()):
+                break
+            t += 1
+        self.assertTrue(self.individual.has_failed(), f'Not reached max level {self.individual.rocket.pos}')
 
 if __name__ == '__main__':
     unittest.main()

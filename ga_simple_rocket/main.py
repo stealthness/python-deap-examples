@@ -16,28 +16,41 @@ population = []
 shapes = []
 
 for x in range(POPULATION_SIZE):
-    population.append(Individual(f'r{x}'))
+    individual = Individual(f'r{x}')
+    individual.rocket.pos = START_HEIGHT
+    individual.rocket.engine_force = ROCKET_ENGINE_FORCE
+    population.append(individual)
 
-population[1].rocket.engine_on = True
+all_off = [0]*MAX_TIME_INTERVALS
+all_on = [1]*MAX_TIME_INTERVALS
+
+population[0].commands = all_off
+population[0].rocket.engine_force = 9.8
+
+population[1].commands = all_on
 population[1].rocket.engine_force = 9.8
 
-population[2].rocket.engine_on = True
+population[2].commands = all_on
 population[2].rocket.engine_force = 14
 
 x = (win.getWidth() - 20) / POPULATION_SIZE
 for ind in population:
-    ind.rocket.pos = START_HEIGHT
-    shape = get_rocket_shape(ind.rocket.pos, Point(x, win.getHeight() - START_HEIGHT - WIN_ADJUST))
+    y = - ind.rocket.pos - WIN_ADJUST + win.getHeight()
+    shape = get_rocket_shape(Point(x, y))
     shape.draw(win)
     shapes.append(shape)
     x += (win.getWidth() - 20) / POPULATION_SIZE
 
-
+# set time interval to 0
 t = 0
 info_msg = Text(Point(win.getWidth() - 30, win.getWidth() - 30), f'{population[0].rocket.pos}')
 info_msg.draw(win)
 
-line = Line(Point(0, win.getHeight()-50), Point(win.getWidth(), win.getHeight()-50))
+line = Line(Point(0, win.getHeight() - WIN_ADJUST), Point(win.getWidth(), win.getHeight() - WIN_ADJUST))
+line.draw(win)
+
+line = Line(Point(0, win.getHeight() - MAX_ROCKET_HEIGHT - 50), Point(win.getWidth(), win.getHeight()  - MAX_ROCKET_HEIGHT- 50))
+line.setFill('red')
 line.draw(win)
 
 while t < MAX_TIME_INTERVALS:
@@ -47,17 +60,11 @@ while t < MAX_TIME_INTERVALS:
         shape.move(0, -dv)
         info_msg.setText(f'{ind.rocket.pos:0.4f}')
 
-        if ind.rocket.name == 'r3':
-            ind.rocket.engine_on = (random() < 0.7)
-            print(ind.rocket.engine_on)
-
         if ind.has_landed():
-            landed_msg = Text(Point(300, 200), 'Touchdown')
-            landed_msg.draw(win)
+            shape.setFill("green")
             break
         elif ind.rocket.has_failed:
-            bang_msg = Text(Point(300, 200), 'Bang')
-            bang_msg.draw(win)
+            shape.setFill('red')
             break
 # End GUI
 

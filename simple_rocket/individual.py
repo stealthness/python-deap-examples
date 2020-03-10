@@ -42,14 +42,14 @@ class Individual:
         Calculates the the fitness of the rocket position from the target location
         :return: fitness of the individual
         """
-        if self._has_failed():
+        if self.has_failed():
             return 1.0
         if self.rocket.pos - self.target < 1e-10:
             return 1.0
         else:
             return 1 / (1 + 1/(self.rocket.pos - self.target))
 
-    def _has_failed(self):
+    def has_failed(self):
         TOL = 0.1
         if config.MAX_ROCKET_HEIGHT < self.rocket.pos:
             # too high
