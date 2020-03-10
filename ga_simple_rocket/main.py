@@ -5,7 +5,7 @@ from graphics import *
 from random import random
 
 from ga_simple_rocket.config import *
-from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color
+from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color, get_ground_and_sky_limit
 from simple_rocket.individual import Individual
 
 # create the GUI Grapthwin to add graphics to
@@ -45,22 +45,26 @@ for ind in population:
 t = 0
 info_msg = Text(Point(win.getWidth() - 30, win.getWidth() - 30), f'{population[0].rocket.pos}')
 info_msg.draw(win)
-y = GROUND_LEVEL + win.getHeight() - WIN_ADJUST
-line = Line(Point(0, y), Point(win.getWidth(), y))
-line.draw(win)
 
-y = win.getHeight() - MAX_ROCKET_HEIGHT - WIN_ADJUST
-line = Line(Point(0, y), Point(win.getWidth(), y))
-line.setFill('red')
-line.draw(win)
-
-while t < MAX_TIME_INTERVALS:
+get_ground_and_sky_limit(win)
+solution_found = False
+solution_possible = True
+while t < MAX_TIME_INTERVALS and solution_possible:
     time.sleep(REFRESH_RATE)
     for shape, ind in zip(shapes, population):
         dv, fitness = ind.update(t)
         shape.move(0, -dv)
         info_msg.setText(f'{population[0].rocket.pos:0.4f}')
-        set_rocket_color(individual.rocket, shape)
+        set_rocket_color(ind.rocket, shape)
+    for ind in population:
+        solution_possible = False
+        if ind.has_landed():
+            solution_found = True
+            break
+        elif not ind.has_failed():
+            solution_possible = True
+            break
+
 
 # End GUI
 
