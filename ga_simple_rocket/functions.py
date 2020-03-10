@@ -1,9 +1,10 @@
 """:arg
 This file is to be used for function for simple rocket
 """
-from graphics import Polygon, Point
-from simple_rocket.rocket import SimpleRocket
+from graphics import Polygon, Point, Line
 
+from ga_simple_rocket.config import MAX_ROCKET_HEIGHT, WIN_ADJUST
+from simple_rocket.rocket import SimpleRocket
 
 
 def get_rocket_shape(point) -> Polygon:
@@ -15,6 +16,7 @@ def get_rocket_shape(point) -> Polygon:
     shape.setFill("black")
     return shape
 
+
 def set_rocket_color(rocket:SimpleRocket, shape):
     if rocket.has_failed:
         shape.setFill('red')
@@ -24,3 +26,14 @@ def set_rocket_color(rocket:SimpleRocket, shape):
         shape.setFill('gray')
     else:
         shape.setFill('black')
+
+
+def get_ground_and_sky_limit(win):
+    y = win.getHeight() - WIN_ADJUST
+    line = Line(Point(0, y), Point(win.getWidth(), y))
+    line.draw(win)
+
+    y = win.getHeight() - MAX_ROCKET_HEIGHT - WIN_ADJUST
+    line = Line(Point(0, y), Point(win.getWidth(), y))
+    line.setFill('red')
+    line.draw(win)

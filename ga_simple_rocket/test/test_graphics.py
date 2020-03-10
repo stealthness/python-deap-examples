@@ -1,23 +1,20 @@
 """
-This is test code for rocket shape
+This is test code for simple rocket shape
 """
 from graphics import *
 
 from ga_simple_rocket.config import *
-from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color
+from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color, get_ground_and_sky_limit
 
 # create the GUI Grapthwin to add graphics to
 from simple_rocket.individual import Individual
 
-win = GraphWin('Face', WINDOW_SIZE[0], WINDOW_SIZE[1])  # give title and dimensions
+# give title and dimensions
+win = GraphWin('Simple Rocket Test', WINDOW_SIZE[0], WINDOW_SIZE[1])
 
+# Create two lines
 
-line = Line(Point(0, win.getHeight() - WIN_ADJUST), Point(win.getWidth(), win.getHeight() - WIN_ADJUST))
-line.draw(win)
-
-line = Line(Point(0, win.getHeight() - MAX_ROCKET_HEIGHT - 50), Point(win.getWidth(), win.getHeight()  - MAX_ROCKET_HEIGHT- 50))
-line.setFill('red')
-line.draw(win)
+get_ground_and_sky_limit(win)
 
 shapes = []
 population = []

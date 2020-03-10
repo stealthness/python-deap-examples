@@ -36,7 +36,6 @@ class Individual:
         fitness = self.calculate_fitness
         return delta_s, fitness
 
-
     def calculate_fitness(self) -> float:
         """
         Calculates the the fitness of the rocket position from the target location
