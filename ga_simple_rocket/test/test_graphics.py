@@ -2,6 +2,7 @@
 This is test code for simple rocket shape
 """
 from graphics import *
+from typing import List
 
 from ga_simple_rocket.config import *
 from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color, get_ground_and_sky_limit
@@ -13,54 +14,56 @@ from simple_rocket.individual import Individual
 win = GraphWin('Simple Rocket Test', WINDOW_SIZE[0], WINDOW_SIZE[1])
 
 # Create two lines
-
 get_ground_and_sky_limit(win)
 
-shapes = []
-population = []
+shapes: List[Polygon] = []
+population: List[Individual] = []
 
 # create an individual at start height
-population.append(Individual("r0"))
-population[0].rocket.pos = START_HEIGHT
-y = - population[0].rocket.pos - WIN_ADJUST + win.getHeight()
-print(population[0])
+new_ind = Individual("r0")
+new_ind.rocket.pos = START_HEIGHT
+population.append(new_ind)
+# shape for new_ind
+y = - new_ind.rocket.pos - WIN_ADJUST + win.getHeight()
 shapes.append(get_rocket_shape(Point(50, y)))
 
 # create an individual at ground, but at speed
-population.append(Individual("r1"))
-population[1].rocket.pos = GROUND_LEVEL
-population[1].rocket.vel = -20
-population[1].rocket.acc = -9.8
-population[1].rocket.has_failed = True
-y = - population[1].rocket.pos - WIN_ADJUST + win.getHeight()
+new_ind = Individual("r1")
+new_ind.rocket.pos = GROUND_LEVEL
+new_ind.rocket.vel = -20
+new_ind.rocket.acc = -9.8
+new_ind.rocket.has_failed = True
+population.append(new_ind)
+y = - new_ind.rocket.pos - WIN_ADJUST + win.getHeight()
 shapes.append(get_rocket_shape(Point(100, y)))
 
 # create an individual at ground, but at rest
-population.append(Individual("r2"))
-population[2].rocket.pos = GROUND_LEVEL
-population[2].rocket.vel = 0.0001
-population[2].rocket.acc = 0.02
-population[2].rocket.has_landed = True
-y = - population[2].rocket.pos - WIN_ADJUST + win.getHeight()
+new_ind = Individual("r2")
+new_ind.rocket.pos = GROUND_LEVEL
+new_ind.rocket.vel = 0.0001
+new_ind.rocket.acc = 0.02
+new_ind.rocket.has_landed = True
+population.append(new_ind)
+y = - new_ind.rocket.pos - WIN_ADJUST + win.getHeight()
 shapes.append(get_rocket_shape(Point(150, y)))
 
-
 # create an individual at ground, but at rest
-population.append(Individual("r3"))
-population[3].rocket.vel = 25.0
-population[3].rocket.pos = MAX_ROCKET_HEIGHT + population[3].rocket.vel + 10
-population[3].rocket.acc = 50
-population[3].rocket.has_failed =  True
-y = - population[3].rocket.pos - WIN_ADJUST + win.getHeight()
+new_ind = Individual("r3")
+new_ind.rocket.vel = 25.0
+new_ind.rocket.pos = MAX_ROCKET_HEIGHT + new_ind.rocket.vel + 10
+new_ind.rocket.acc = 50
+new_ind.rocket.has_failed = True
+population.append(new_ind)
+y = - new_ind.rocket.pos - WIN_ADJUST + win.getHeight()
 shapes.append(get_rocket_shape(Point(200, y)))
 
 
 # create an individual at start height
-population.append(Individual("r4"))
-population[4].rocket.pos = START_HEIGHT
-population[4].rocket.engine_on = True
-y = - population[4].rocket.pos - WIN_ADJUST + win.getHeight()
-print(population[4])
+new_ind = Individual("r4")
+new_ind.rocket.pos = START_HEIGHT
+new_ind.rocket.engine_on = True
+population.append(new_ind)
+y = - new_ind.rocket.pos - WIN_ADJUST + win.getHeight()
 shapes.append(get_rocket_shape(Point(250, y)))
 
 for shape, ind in zip (shapes, population):
