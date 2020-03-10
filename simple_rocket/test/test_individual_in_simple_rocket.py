@@ -49,5 +49,8 @@ class MyTestCase(unittest.TestCase):
             t += 1
         self.assertTrue(self.individual.has_failed(), f'has crashed {self.individual.rocket.pos}')
 
+
+
+
 if __name__ == '__main__':
     unittest.main()

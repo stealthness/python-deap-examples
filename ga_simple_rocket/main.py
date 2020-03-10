@@ -45,11 +45,12 @@ for ind in population:
 t = 0
 info_msg = Text(Point(win.getWidth() - 30, win.getWidth() - 30), f'{population[0].rocket.pos}')
 info_msg.draw(win)
-
-line = Line(Point(0, win.getHeight() - WIN_ADJUST), Point(win.getWidth(), win.getHeight() - WIN_ADJUST))
+y = GROUND_LEVEL + win.getHeight() - WIN_ADJUST
+line = Line(Point(0, y), Point(win.getWidth(), y))
 line.draw(win)
 
-line = Line(Point(0, win.getHeight() - MAX_ROCKET_HEIGHT - 50), Point(win.getWidth(), win.getHeight()  - MAX_ROCKET_HEIGHT- 50))
+y = win.getHeight() - MAX_ROCKET_HEIGHT - WIN_ADJUST
+line = Line(Point(0, y), Point(win.getWidth(), y))
 line.setFill('red')
 line.draw(win)
 
@@ -60,7 +61,7 @@ while t < MAX_TIME_INTERVALS:
         shape.move(0, -dv)
         info_msg.setText(f'{population[0].rocket.pos:0.4f}')
         set_rocket_color(individual.rocket, shape)
-        
+
 # End GUI
 
     t += 1
