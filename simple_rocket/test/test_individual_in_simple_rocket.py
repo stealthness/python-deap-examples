@@ -1,6 +1,6 @@
 import unittest
 
-from ga_rocket_example import config
+from ga_simple_rocket.config import *
 from simple_rocket.individual import Individual
 
 
@@ -15,12 +15,12 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual('r0', self.individual.rocket.name)
 
     def test_rocket_crashed_below_ground(self):
-        self.individual.rocket.pos = config.GROUND_LEVEL - 10.0
+        self.individual.rocket.pos = GROUND_LEVEL - 10.0
         self.assertEqual(1, self.individual.calculate_fitness())
         self.assertTrue(self.individual.rocket.has_failed)
 
     def test_rocket_gone_high(self):
-        self.individual.rocket.pos = config.MAX_ROCKET_HEIGHT + 1.0
+        self.individual.rocket.pos = MAX_ROCKET_HEIGHT + 1.0
         self.assertEqual(1, self.individual.calculate_fitness())
         self.assertTrue(self.individual.rocket.has_failed, f'{self.individual}')
 
@@ -36,10 +36,18 @@ class MyTestCase(unittest.TestCase):
         self.individual.rocket.engine_force = 40
         while t < 100:
             self.individual.update(t)
-            if (self.individual.has_failed()):
-                break
             t += 1
         self.assertTrue(self.individual.has_failed(), f'Not reached max level {self.individual.rocket.pos}')
+        self.assertTrue(MAX_ROCKET_HEIGHT + self.individual.rocket.vel + 10 > self.individual.rocket.pos, 'rocket still moing')
+
+    def test_rocket_freefalls_and_crashes(self):
+        t = 0
+        self.individual.commands = [0]*100
+        self.individual.rocket.engine_force = 40
+        while t < 100:
+            self.individual.update(t)
+            t += 1
+        self.assertTrue(self.individual.has_failed(), f'has crashed {self.individual.rocket.pos}')
 
 if __name__ == '__main__':
     unittest.main()

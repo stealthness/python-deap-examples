@@ -1,6 +1,7 @@
 """
 This file holds the class Individual
 """
+import math
 from random import random
 
 from ga_rocket_example import config
@@ -24,10 +25,9 @@ class Individual:
         self.generate_commands()
 
     def __str__(self):
-        return f'name: {self.rocket.name}, fitness:{self.fitness}, rocket:{self.rocket}'
+        return f'name: {self.rocket.name}, fitness:{self.fitness:.3f}, rocket:{self.rocket}'
 
     def update(self, t):
-        print(f't:{t}')
         if self.commands[t] == 1:
             self.rocket.engine_on = True
         else:
@@ -47,7 +47,7 @@ class Individual:
         if self.rocket.pos - self.target < 1e-10:
             return 1.0
         else:
-            return 1 / (1 + 1/(self.rocket.pos - self.target))
+            return 1 / (1 + 1/math.abs(self.rocket.pos - self.target))
 
     def has_failed(self):
         TOL = 0.1

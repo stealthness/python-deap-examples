@@ -5,7 +5,7 @@ from graphics import *
 from random import random
 
 from ga_simple_rocket.config import *
-from ga_simple_rocket.functions import get_rocket_shape
+from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color
 from simple_rocket.individual import Individual
 
 # create the GUI Grapthwin to add graphics to
@@ -58,14 +58,9 @@ while t < MAX_TIME_INTERVALS:
     for shape, ind in zip(shapes, population):
         dv, fitness = ind.update(t)
         shape.move(0, -dv)
-        info_msg.setText(f'{ind.rocket.pos:0.4f}')
-
-        if ind.has_landed():
-            shape.setFill("green")
-            break
-        elif ind.rocket.has_failed:
-            shape.setFill('red')
-            break
+        info_msg.setText(f'{population[0].rocket.pos:0.4f}')
+        set_rocket_color(individual.rocket, shape)
+        
 # End GUI
 
     t += 1
