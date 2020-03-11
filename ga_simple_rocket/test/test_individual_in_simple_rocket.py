@@ -21,7 +21,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_rocket_gone_high(self):
         self.individual.rocket.pos = MAX_ROCKET_HEIGHT + 1.0
-        self.assertEqual(1, self.individual.calculate_fitness())
+        self.assertEqual(1.0, self.individual.calculate_fitness())
         self.assertTrue(self.individual.rocket.has_failed, f'{self.individual}')
 
     def test_rocket_has_landed(self):
@@ -40,7 +40,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(self.individual.has_failed(), f'Not reached max level {self.individual.rocket.pos}')
         self.assertTrue(MAX_ROCKET_HEIGHT + self.individual.rocket.vel + 10 > self.individual.rocket.pos, 'rocket still moing')
 
-    def test_rocket_freefalls_and_crashes(self):
+    def test_rocket_free_falls_and_crashes(self):
         t = 0
         self.individual.commands = [0]*100
         self.individual.rocket.engine_force = 40

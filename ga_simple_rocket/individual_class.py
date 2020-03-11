@@ -3,9 +3,10 @@ This file holds the class Individual
 """
 import math
 from random import random
+import numpy as np
 
 from ga_rocket_example import config
-from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS, TOL
+from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS, TOL, MAX_ROCKET_HEIGHT
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
@@ -28,13 +29,18 @@ class Individual:
         return f'name: {self.rocket.name}, fitness:{self.fitness:.3f}, rocket:{self.rocket}'
 
     def update(self, t):
+        """
+        Updates the the Individuals rocket for command[t]. Returns the displacement and fitness
+        :param t:
+        :return:
+        """
         if self.commands[t] == 1:
             self.rocket.engine_on = True
         else:
             self.rocket.engine_on = False
-        delta_s = self.rocket.update()
+        ds = self.rocket.update()
         fitness = self.calculate_fitness
-        return delta_s, fitness
+        return ds, fitness
 
     def calculate_fitness(self) -> float:
         """
@@ -46,20 +52,24 @@ class Individual:
         if self.rocket.pos - self.target < 1e-10:
             return 1.0
         else:
-            return 1 / (1 + 1/math.abs(self.rocket.pos - self.target))
+            return 1 / (1 + 1/np.abs(self.rocket.pos - self.target))
 
     def has_failed(self) -> bool:
-        if config.MAX_ROCKET_HEIGHT < self.rocket.pos + self.rocket.vel:  # check rocket height
-            self.rocket.exploded()
+        """
+        checks if the individual rocket has fails, and then
+        :return:
+        """
+        if self.rocket.pos >= MAX_ROCKET_HEIGHT:  # check rocket height
+            self.rocket.self_destruct()
             return True
-        elif config.GROUND_LEVEL - TOL < self.rocket.pos:
-            return False
-        elif config.GROUND_LEVEL - TOL < self.rocket.pos <= config.GROUND_LEVEL + TOL and -TOL < self.rocket.vel < TOL and -TOL < self.rocket.acc < TOL:
+        elif config.GROUND_LEVEL - TOL > self.rocket.pos:  # check ground level
+            self.rocket.self_destruct()
+            return True
+        elif config.GROUND_LEVEL - TOL < self.rocket.pos <= config.GROUND_LEVEL + TOL and -TOL < self.rocket.vel < TOL:
             self.rocket.complete_landing()
             return False
         else:
-            self.rocket.exploded()
-            return True
+            return False
 
     def has_landed(self) -> bool:
         TOL = 10
