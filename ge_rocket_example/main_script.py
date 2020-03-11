@@ -1,7 +1,5 @@
-from rocket.rocket import Rocket
-import numpy as np
-from rocket.population import Population
-from ge_rocket_example.functions import *
+from ga_rocket_example.population_class import Population
+from ga_rocket_example.functions import *
 from graphics import *
 from ge_rocket_example.config import MAX_COUNT
 

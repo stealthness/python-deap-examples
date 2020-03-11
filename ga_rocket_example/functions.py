@@ -3,18 +3,18 @@ import random
 
 import numpy as np
 
-from ge_rocket_example import config
-from rocket.rocket import Rocket
-from ge_rocket_example.config import REFRESH_RATE, ROCKET_SIZE, WINDOW_SIZE, TARGET_POSITION
+from ga_rocket_example import config
+from ga_rocket_example.config import ROCKET_SIZE, WINDOW_SIZE, TARGET_POSITION
 
 
-def get_rocket_shape(rocket_position, rocket_direction) -> Polygon:
-    center = convert_position_point(rocket_position)
+def get_rocket_shape(center: Point, rocket_direction:int) -> Polygon:
     tip = rotate_about_centre(center, ROCKET_SIZE, rocket_direction)
-    bottom_left = rotate_about_centre(center, ROCKET_SIZE // 2, rocket_direction + 2 * np.pi / 3)
-    bottom_right = rotate_about_centre(center, ROCKET_SIZE // 2, rocket_direction + 4 * np.pi / 3)
+    bottom_left = rotate_about_centre(center, ROCKET_SIZE // 2, rocket_direction + 120)
+    bottom_right = rotate_about_centre(center, ROCKET_SIZE // 2, rocket_direction + 240)
     vertices = [tip, bottom_left, bottom_right]
-    return Polygon(vertices)
+    shape = Polygon(vertices)
+    shape.setFill('black')
+    return shape
 
 
 def convert_position(position):
@@ -36,7 +36,7 @@ def convert_position_point(position):
 
 
 def rotate_about_centre(center: Point, magnitude, rotation):
-    return Point(center.x + magnitude * np.sin(rotation), center.y - magnitude * np.cos(rotation))
+    return Point(center.x + magnitude * np.sin(2*np.pi*rotation/360), center.y - magnitude * np.cos(2*np.pi*rotation/360))
 
 
 def rotate_rocket_shape(shape: Polygon, center: Point, direction):

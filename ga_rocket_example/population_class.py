@@ -1,6 +1,6 @@
 """:arg"""
 from ge_rocket_example import config
-from rocket.rocket import Rocket
+from ga_rocket_example.rocket_class import Rocket
 
 
 class Population:

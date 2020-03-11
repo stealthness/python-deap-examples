@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from rocket.rocket import Rocket
+from ga_rocket_example.rocket_class import Rocket
 
 TOL = 0.0001
 
