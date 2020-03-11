@@ -5,14 +5,15 @@ from graphics import Polygon, Point, Line, Text, GraphWin, time
 
 from sklearn.utils import Bunch
 
-from ga_simple_rocket.config import MAX_ROCKET_HEIGHT, WIN_ADJUST, WINDOW_SIZE, REFRESH_RATE
+from ga_simple_rocket.config import MAX_ROCKET_HEIGHT, WIN_ADJUST, WINDOW_SIZE, REFRESH_RATE, ROCKET_SIZE
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
 def get_rocket_shape(point) -> Polygon:
+    point.move(0, -ROCKET_SIZE)
     tip = point
-    bottom_left = Point(point.x + 10, point.y + 20)
-    bottom_right = Point(point.x - 10, point.y + 20)
+    bottom_left = Point(point.x + ROCKET_SIZE//2, point.y + ROCKET_SIZE)
+    bottom_right = Point(point.x - ROCKET_SIZE//2, point.y + ROCKET_SIZE)
     vertices = [tip, bottom_left, bottom_right]
     shape = Polygon(vertices)
     shape.setFill("black")
@@ -39,6 +40,7 @@ def get_ground_and_sky_limit(win):
     line = Line(Point(0, y), Point(win.getWidth(), y))
     line.setFill('red')
     line.draw(win)
+
 
 def end_windows(win):
     """
@@ -72,10 +74,7 @@ def reply_single_rocket(b: Bunch, x: int = 100) -> object:
     for i, d in enumerate(b.data):
         time.sleep(REFRESH_RATE)
         shape.move(0, -d['ds'])
-        if d['failed']:
-            shape.setFill('red')
-        elif d['landed']:
-            shape.setFill('green')
+        color_shape(shape, d['failed'], d['landed'])
         time_message.setText(f'time:{i+1}')
     end_windows(win)
 
@@ -103,9 +102,15 @@ def reply_multiple_rocket(b: Bunch):
         time.sleep(REFRESH_RATE)
         for i in range(2):
             ds = b.data[i][t]['ds']
-            shapes[i].move(0, ds)
-
+            shapes[i].move(0, -ds)
+            color_shape(shapes[i], b.data[i][t]['failed'], b.data[i][t]['landed'])
         time_message.setText(f'time:{i+1}')
 
-
     end_windows(win)
+
+
+def color_shape(shape, has_failed, has_landed):
+    if has_failed:
+        shape.setFill('red')
+    elif has_landed:
+        shape.setFill('green')
