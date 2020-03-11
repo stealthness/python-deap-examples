@@ -24,7 +24,7 @@ population[0].commands = [0]*MAX_TIME_INTERVALS
 y = - population[0].rocket.pos - WIN_ADJUST + win.getHeight()
 shapes.append(get_rocket_shape(Point(win.getWidth()/2, y)))
 
-population[0].rocket.vel = 10  # intially moving up
+population[0].rocket.vel = 10  # initially moving up
 population[0].rocket.acc = 0.0  # free falling
 
 set_rocket_color(population[0].rocket, shapes[0])

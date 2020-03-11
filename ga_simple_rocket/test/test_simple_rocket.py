@@ -11,12 +11,11 @@ ds  = (v - u)*dt/2
     = (a*dt^2)/2
 
 """
-
-
 import unittest
 from ga_rocket_example import config
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 TOL: float = 0.001
+
 
 class MyTestCase(unittest.TestCase):
 
@@ -76,7 +75,6 @@ class MyTestCase(unittest.TestCase):
         self.assertAlmostEqual(44.1, self.r.pos, delta=TOL, msg='pos')
         self.assertAlmostEqual(29.4, self.r.vel, delta=TOL, msg='vel')
         self.assertAlmostEqual(9.8, self.r.acc, delta=TOL, msg='acc')
-
 
 
 if __name__ == '__main__':
