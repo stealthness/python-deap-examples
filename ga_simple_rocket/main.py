@@ -4,7 +4,7 @@ This is the main code for the simple rocket example
 from graphics import *
 
 from ga_simple_rocket.config import *
-from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color, get_ground_and_sky_limit
+from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color, get_ground_and_sky_limit, end_windows
 from ga_simple_rocket.individual_class import Individual
 
 # create the GUI Grapthwin to add graphics to
@@ -58,7 +58,6 @@ while t < MAX_TIME_INTERVALS and solution_possible:
         shape.move(0, -ds)
         set_rocket_color(ind.rocket, shape)
         if ind.has_landed():
-            print("solution found")
             solution_found = True
             set_rocket_color(ind.rocket, shape)
         elif not ind.has_failed():
@@ -70,9 +69,4 @@ while t < MAX_TIME_INTERVALS and solution_possible:
     t += 1
 
 # End GUI
-
-print(f"time {t}")
-message = Text(Point(win.getWidth() / 2, 20), 'Click anywhere to quit.')
-message.draw(win)
-win.getMouse()
-win.close()
+end_windows(win)

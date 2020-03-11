@@ -7,27 +7,21 @@ from graphics import Point
 from sklearn.utils import Bunch
 
 from ga_simple_rocket.functions import reply_single_rocket, get_rocket_shape
+from ga_simple_rocket.individual_class import Individual
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 d = Bunch()
 d.name = 'r0'
 d.data = []
-d.shape = get_rocket_shape(Point(100, 200))
 
-r = SimpleRocket('r0')
-r.pos = 200
-r.engine_force = -30
-r.engine_on = True
-
-for t in range(80):
-    if t > 20:
-        r.engine_on = False
-    if t > 60:
-        r.engine_on = True
-        r.engine_force = 40
-    if t > 70:
-        r.engine_on = False
-    ds = r.update()
-    d.data.append({'ds': ds, 'pos': r.pos})
+ind = Individual('r0')
+ind.rocket
+ind.rocket.pos = 200
+ind.rocket.engine_force = 10
+ind.rocket.engine_on = False
+d.data.append({'ds': 0.0, 'pos': ind.rocket.pos})
+for t in range(120):
+    ds, _ = ind.update(t)
+    d.data.append({'ds': ds, 'pos': ind.rocket.pos})
 
 reply_single_rocket(d)

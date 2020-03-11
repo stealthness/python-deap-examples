@@ -34,12 +34,19 @@ class Individual:
         :param t:
         :return:
         """
-        if self.commands[t] == 1:
-            self.rocket.engine_on = True
+        if self.rocket.has_failed:
+            ds = 0.0
+            fitness = 1.0
+        elif self.rocket.has_landed:
+            ds = 0.0
+            fitness = 0.0
         else:
-            self.rocket.engine_on = False
-        ds = self.rocket.update()
-        fitness = self.calculate_fitness
+            if self.commands[t] == 1:
+                self.rocket.engine_on = True
+            else:
+                self.rocket.engine_on = False
+            ds = self.rocket.update()
+            fitness = self.calculate_fitness()
         return ds, fitness
 
     def calculate_fitness(self) -> float:

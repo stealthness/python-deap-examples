@@ -40,22 +40,36 @@ def get_ground_and_sky_limit(win):
     line.setFill('red')
     line.draw(win)
 
+def end_windows(win):
+    """
+    Boiler plate code to end window
+    :param win:
+    :return:
+    """
+    message = Text(Point(win.getWidth() / 2, 20), 'Click anywhere to quit.')
+    message.draw(win)
+    win.getMouse()
+    win.close()
 
 def reply_single_rocket(b: Bunch):
+    """
+    Animates the the data of a single rocket falling
+    :param b:
+    :return:
+    """
     win = GraphWin('Face', WINDOW_SIZE[0], WINDOW_SIZE[1])
     get_ground_and_sky_limit(win)
-    shape = b.shape
+    # create rocket shape from the initial rocket position
+    y = win.getHeight() - WIN_ADJUST - b.data[0]['pos']
+    shape = get_rocket_shape(Point(100, y))
     shape.draw(win)
+    # create time counter
     time_message = Text(Point(win.getWidth() / 4, win.getHeight() - 20), 'time:0')
     time_message.draw(win)
+    # animate using the data
     for i, d in enumerate(b.data):
         time.sleep(REFRESH_RATE)
         shape.move(0, -d['ds'])
         time_message.setText(f'time:{i+1}')
 
-
-
-    message = Text(Point(win.getWidth() / 2, 20), 'Click anywhere to quit.')
-    message.draw(win)
-    win.getMouse()
-    win.close()
+    end_windows(win)
