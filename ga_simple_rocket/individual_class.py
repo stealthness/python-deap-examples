@@ -6,7 +6,8 @@ from random import random
 import numpy as np
 
 from ga_rocket_example import config
-from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS, TOL, MAX_ROCKET_HEIGHT
+from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS, TOL, MAX_ROCKET_HEIGHT, \
+    GENERATE_RANDOM_COMMANDS
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
@@ -85,9 +86,8 @@ class Individual:
             return True
 
     def generate_commands(self):
-        new_commands = []
         for x in range(MAX_TIME_INTERVALS):
-            if random() < GENERATE_ENGINE_PROB_FIRE:
+            if random() < GENERATE_ENGINE_PROB_FIRE and GENERATE_RANDOM_COMMANDS:
                 self.commands.append(1)
             else:
                 self.commands.append(0)

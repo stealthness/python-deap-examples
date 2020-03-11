@@ -80,5 +80,32 @@ def reply_single_rocket(b: Bunch, x: int = 100) -> object:
     end_windows(win)
 
 
-def reply_multiple_rocket(d):
-    pass
+def reply_multiple_rocket(b: Bunch):
+    """
+    Will draw multiple rockets evenly space and reply their movement
+    :param b: Bunch object holding data information
+    """
+    win = GraphWin('Face', WINDOW_SIZE[0], WINDOW_SIZE[1])
+    get_ground_and_sky_limit(win)
+    # create time counter
+    time_message = Text(Point(win.getWidth() / 4, win.getHeight() - 20), 'time:0')
+    time_message.draw(win)
+    shapes = []
+    for i in range(len(b.data)):
+        print(f'create shape{i}')
+        # create rocket shape from the initial rocket position
+        y = win.getHeight() - WIN_ADJUST - b.data[0][0]['pos']
+        x = win.getWidth()/3
+        shapes.append(get_rocket_shape(Point(x + x*i, y)))
+        shapes[i].draw(win)
+
+    for t in range(100):
+        time.sleep(REFRESH_RATE)
+        for i in range(2):
+            ds = b.data[i][t]['ds']
+            shapes[i].move(0, ds)
+
+        time_message.setText(f'time:{i+1}')
+
+
+    end_windows(win)
