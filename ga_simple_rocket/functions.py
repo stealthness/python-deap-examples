@@ -90,17 +90,18 @@ def reply_multiple_rocket(b: Bunch):
     time_message = Text(Point(win.getWidth() / 4, win.getHeight() - 20), 'time:0')
     time_message.draw(win)
     shapes = []
-    for i in range(len(b.data)):
+    n = len(b.data)
+    for i in range(n):
         print(f'create shape{i}')
         # create rocket shape from the initial rocket position
         y = win.getHeight() - WIN_ADJUST - b.data[0][0]['pos']
-        x = win.getWidth()/3
+        x = win.getWidth()/(n+1)
         shapes.append(get_rocket_shape(Point(x + x*i, y)))
         shapes[i].draw(win)
 
     for t in range(100):
         time.sleep(REFRESH_RATE)
-        for i in range(2):
+        for i in range(n):
             ds = b.data[i][t]['ds']
             shapes[i].move(0, -ds)
             color_shape(shapes[i], b.data[i][t]['failed'], b.data[i][t]['landed'])

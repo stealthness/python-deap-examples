@@ -11,35 +11,32 @@ from ga_simple_rocket.functions import reply_single_rocket, get_rocket_shape, re
 from ga_simple_rocket.individual_class import Individual
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
-number_of_rockets = 2
+number_of_rockets = 5
 
 # creating a Bunch object to store individuals details
 b = Bunch()
-b.names = ['r0', 'r1']
-individuals = [Individual('r0'), Individual('r1')]
-
-# creating two rockets
-b.rockets = [individuals[0].rocket, individuals[1].rocket]
-r0_data = []
-r1_data = []
-individuals[1].commands = [0]*MAX_TIME_INTERVALS
-
-b.data = [r0_data, r1_data]
-
-b.rockets[0].pos = 200
-b.rockets[1].pos = 200
-
+b.names = []
+b.individuals = []
+b.data = []
 for i in range(number_of_rockets):
-    info = {'time': 0, 'ds': 0.0, 'pos': b.rockets[i].pos, 'vel': b.rockets[i].vel, 'acc': b.rockets[i].acc}
+    b.names.append(f'r{i}')
+    b.individuals.append(Individual(f'r{i}'))
+    b.individuals[i].rocket.pos = 200
+    b.data.append([])
+
+    info = {'time': 0, 'ds': 0.0}
+    info.update({'pos': b.individuals[i].rocket.pos, 'vel': b.individuals[i].rocket.vel, 'acc': b.individuals[i].rocket.acc})
     info.update({'failed': False, 'landed': False})
     b.data[i].append(info)
 
+for i in range(number_of_rockets):
     for t in range(MAX_TIME_INTERVALS):
-        ds, fitness = individuals[i].update(t)
+        ds, fitness = b.individuals[i].update(t)
 
-        is_landed = b.rockets[i].has_landed
-        is_failed = b.rockets[i].has_failed
-        info = {'time': 0, 'ds': ds, 'pos': b.rockets[i].pos, 'vel': b.rockets[i].vel, 'acc': b.rockets[i].acc}
+        is_landed = b.individuals[i].rocket.has_landed
+        is_failed = b.individuals[i].rocket.has_failed
+        info = {'time': t, 'ds': ds}
+        info.update({'pos': b.individuals[i].rocket.pos, 'vel': b.individuals[i].rocket.vel, 'acc': b.individuals[i].rocket.acc})
         info.update({'failed': is_failed, 'landed': is_landed})
         b.data[i].append(info)
 

@@ -9,12 +9,12 @@ logging.basicConfig(level=logging.DEBUG)
 
 class SimpleRocket:
 
-    def __init__(self, name) -> float:
+    def __init__(self, name, engine_force=20) -> float:
         self.pos: float = 0.0
         self.vel: float = 0.0
         self.acc: float = 0.0
         self.name = name
-        self.engine_force: float = 9.8
+        self.engine_force: float = engine_force
         self.engine_on = False
         self.has_failed = False
         self.has_landed = False
