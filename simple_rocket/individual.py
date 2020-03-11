@@ -5,7 +5,7 @@ import math
 from random import random
 
 from ga_rocket_example import config
-from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS
+from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS, TOL
 from simple_rocket.rocket import SimpleRocket
 
 
@@ -48,13 +48,11 @@ class Individual:
         else:
             return 1 / (1 + 1/math.abs(self.rocket.pos - self.target))
 
-    def has_failed(self):
-        TOL = 0.1
-        if config.MAX_ROCKET_HEIGHT < self.rocket.pos:
-            # too high
+    def has_failed(self) -> bool:
+        if config.MAX_ROCKET_HEIGHT < self.rocket.pos + self.rocket.vel:  # check rocket height
             self.rocket.exploded()
             return True
-        elif config.GROUND_LEVEL + TOL < self.rocket.pos:
+        elif config.GROUND_LEVEL - TOL < self.rocket.pos:
             return False
         elif config.GROUND_LEVEL - TOL < self.rocket.pos <= config.GROUND_LEVEL + TOL and -TOL < self.rocket.vel < TOL and -TOL < self.rocket.acc < TOL:
             self.rocket.complete_landing()
@@ -64,8 +62,8 @@ class Individual:
             return True
 
     def has_landed(self) -> bool:
-        TOL = 0.1
-        if self.rocket.pos < config.GROUND_LEVEL and -TOL < self.rocket.vel < TOL and -TOL < self.rocket.acc < TOL:
+        TOL = 10
+        if self.rocket.pos < config.GROUND_LEVEL + TOL and -TOL < self.rocket.vel < TOL :
             self.rocket.has_landed = True
             return True
 

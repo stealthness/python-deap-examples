@@ -3,7 +3,7 @@ Simple Rocket is a rocket that can only move along the vertical axis
 """
 from ga_rocket_example import config
 import logging
-LOGGING = False
+LOGGING = True
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -36,17 +36,26 @@ class SimpleRocket:
             self.vel += self.acc * delta_time
 
             # update pos
-            self.pos += (self.vel - self.acc * delta_time/2) * delta_time
+            ds = (self.vel - self.acc * delta_time/2) * delta_time
+            self.pos += ds
 
             # logging
             if LOGGING:
                 logging.debug(f' -- pos:{self.pos:.3f}, vel:{self.vel:.3f}, acc:{self.acc:.3f}, engine on:{self.engine_on}')
             # return delta change
-            return self.vel
+            return ds
+        else:
+            return 0.0
 
     def exploded(self):
+        self.vel = 0.0
+        self.acc = 0.0
+        self.engine_on = False
         self.has_failed = True
 
     def complete_landing(self):
+        self.vel = 0.0
+        self.acc = 0.0
+        self.engine_on = False
         self.has_landed = True
 

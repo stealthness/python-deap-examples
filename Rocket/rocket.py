@@ -1,16 +1,8 @@
 import numpy as np
 import logging
 
-ZERO = np.array([0.0, 0.0])
-GRAVITY = np.array([0, -9.8])
-INIT_POSITION = np.array([0.0, 40.0])
-ROCKET_ROTATION_STRENGTH = 0.1
-ROCKET_MAIN_STRENGTH = 15
-GROUND_LEVEL = 0
-MAX_HEIGHT = 800
-MAX_HORIZONTAL_DEVIATION = 400
-TIME_INTERVALS = 10
-REFRESH_RATE = 1/TIME_INTERVALS
+from ga_rocket_example.config import *
+
 
 class Rocket:
     """
@@ -18,35 +10,34 @@ class Rocket:
     """
 
     def __init__(self, name: str, chromosome):
-        self.acceleration = ZERO.copy()
-        self.velocity = ZERO.copy()
-        self.position = INIT_POSITION.copy()
-        self.direction = 0
-        self.main_engine_max_force = ROCKET_MAIN_STRENGTH
-        self.rotational_engine_force = ROCKET_ROTATION_STRENGTH
-        self.time_intervals = TIME_INTERVALS
-        self.has_exploded = False
         self.name = name
-        self.chromosome = chromosome
-        self.verbose = False
+        self.acceleration = np.array([0.0, 0.0])
+        self.velocity = np.array([0.0, 0.0])
+        self.position = np.array(START_POSITION, dtype=float)
+        self.direction: int = 0
+        self.main_engine_on = True
+        self.main_engine_max_force: int = ROCKET_MAIN_ENGINE_FORCE
+        self.rotational_engine_force = ROCKET_ROTATIONAL_ENGINE_FORCE
+        self.time_interval = 1 / TIME_INTERVALS_PER_SEC
+        self.has_exploded = False
+        self.verbose = True
         logging.basicConfig(level=logging.DEBUG)
         self.logger = logging.getLogger(f'Rocket:{name}')
 
     def __str__(self):
         return self.name
 
-    def update(self, i) -> np.array:
+    def update(self, command) -> np.array:
         if self.has_exploded:
             self.logger.debug(f'No update - Rocket has exploded')
+            return np.array((0, 0), dtype=float)
         else:
-            # get commands from chromosome
-            commands = self.chromosome[i]
-
             # update direction
-            self.calculate_new_direction(commands)
-
+            self.calculate_new_direction(command)
             # update acceleration, engine is on if commands[1] == 1
-            self.acceleration = self.calculate_new_acceleration(commands[1] == 1)
+            if command[1] == 1:
+                self.main_engine_on = True
+            self.calculate_new_acceleration()
             # update velocity
             self.velocity += self.acceleration.copy() / self.time_intervals
             # update position
@@ -80,18 +71,16 @@ class Rocket:
 
     # Calculation the the Rockets change
 
-    def calculate_new_acceleration(self, engine_on):
+    def calculate_new_acceleration(self):
         """
         Calculates the change in acceleration
         """
         new_acceleration = self.acceleration.copy()
-        if engine_on:
+        if self.main_engine_on:
             rocket_acc = np.array([np.sin(self.direction), np.cos(self.direction)]) * self.main_engine_max_force
-            new_acceleration = self.acceleration.copy() + GRAVITY + rocket_acc
-            print(f"ENGINE ON ----- {new_acceleration} = (a) {self.acceleration} + (g) {GRAVITY} + (e) {rocket_acc}")
+            new_acceleration = self.acceleration + GRAVITY + rocket_acc
         else:
-            print('FREE FALL ------')
-            new_acceleration = self.acceleration.copy() + GRAVITY
+            new_acceleration = self.acceleration + GRAVITY
         return new_acceleration.copy()
 
     def calculate_new_direction(self, commands):
@@ -101,10 +90,10 @@ class Rocket:
         """
         if commands[0] == 1 and commands[2] == 0:
             self.logger.debug(f'Fire left engine')
-            self.direction += ROCKET_ROTATION_STRENGTH
+            self.direction += ROCKET_ROTATIONAL_ENGINE_FORCE
         elif commands[0] == 0 and commands[2] == 1:
             self.logger.debug(f'Fire left engine')
-            self.direction -= ROCKET_ROTATION_STRENGTH
+            self.direction -= ROCKET_ROTATIONAL_ENGINE_FORCE
         else:
             print('no turn')
 

@@ -25,13 +25,15 @@ all_off = [0]*MAX_TIME_INTERVALS
 all_on = [1]*MAX_TIME_INTERVALS
 
 population[0].commands = all_off
-population[0].rocket.engine_force = 9.8
+population[0].rocket.engine_force = 100
 
-population[1].commands = all_on
-population[1].rocket.engine_force = 9.8
+x = 76
+y = 35
+population[1].commands = [0]*x + [1]*y + [0]*(MAX_TIME_INTERVALS - x - y)
+population[1].rocket.engine_force = 33
 
 population[2].commands = all_on
-population[2].rocket.engine_force = 14
+population[2].rocket.engine_force = 20
 
 x = (win.getWidth() - 20) / POPULATION_SIZE
 for ind in population:
@@ -43,32 +45,34 @@ for ind in population:
 
 # set time interval to 0
 t = 0
-info_msg = Text(Point(win.getWidth() - 30, win.getWidth() - 30), f'{population[0].rocket.pos}')
+info_msg = Text(Point(win.getWidth() - 100, win.getWidth() - 100), f't is {t} pos:{population[0].rocket.pos}')
 info_msg.draw(win)
 
 get_ground_and_sky_limit(win)
 solution_found = False
 solution_possible = True
 while t < MAX_TIME_INTERVALS and solution_possible:
+    solution_possible = False
     time.sleep(REFRESH_RATE)
     for shape, ind in zip(shapes, population):
-        dv, fitness = ind.update(t)
-        shape.move(0, -dv)
-        info_msg.setText(f'{population[0].rocket.pos:0.4f}')
+        ds, fitness = ind.update(t)
+        shape.move(0, -ds)
         set_rocket_color(ind.rocket, shape)
-    for ind in population:
-        solution_possible = False
         if ind.has_landed():
+            print("solution found")
             solution_found = True
-            break
+            set_rocket_color(ind.rocket, shape)
         elif not ind.has_failed():
             solution_possible = True
-            break
+        elif ind.has_failed():
+            set_rocket_color(ind.rocket, shape)
 
+    info_msg.setText(f't is {t} pos:{population[0].rocket.pos:0.4f}')
+    t += 1
 
 # End GUI
 
-    t += 1
+print(f"time {t}")
 message = Text(Point(win.getWidth() / 2, 20), 'Click anywhere to quit.')
 message.draw(win)
 win.getMouse()
