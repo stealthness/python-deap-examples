@@ -19,7 +19,7 @@ def get_rocket_shape(point) -> Polygon:
     return shape
 
 
-def set_rocket_color(rocket:SimpleRocket, shape):
+def set_rocket_color(rocket: SimpleRocket, shape):
     if rocket.has_failed:
         shape.setFill('red')
     elif rocket.has_landed:
@@ -51,17 +51,19 @@ def end_windows(win):
     win.getMouse()
     win.close()
 
-def reply_single_rocket(b: Bunch):
+
+def reply_single_rocket(b: Bunch, x: int = 100) -> object:
     """
     Animates the the data of a single rocket falling
-    :param b:
+    :param b: Bunch object holding data information
+    :param x: position  horizontally along the screen, default 100
     :return:
     """
     win = GraphWin('Face', WINDOW_SIZE[0], WINDOW_SIZE[1])
     get_ground_and_sky_limit(win)
     # create rocket shape from the initial rocket position
     y = win.getHeight() - WIN_ADJUST - b.data[0]['pos']
-    shape = get_rocket_shape(Point(100, y))
+    shape = get_rocket_shape(Point(x, y))
     shape.draw(win)
     # create time counter
     time_message = Text(Point(win.getWidth() / 4, win.getHeight() - 20), 'time:0')
@@ -70,6 +72,13 @@ def reply_single_rocket(b: Bunch):
     for i, d in enumerate(b.data):
         time.sleep(REFRESH_RATE)
         shape.move(0, -d['ds'])
+        if d['failed']:
+            shape.setFill('red')
+        elif d['landed']:
+            shape.setFill('green')
         time_message.setText(f'time:{i+1}')
-
     end_windows(win)
+
+
+def reply_multiple_rocket(d):
+    pass

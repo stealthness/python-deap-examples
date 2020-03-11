@@ -19,9 +19,9 @@ ind.rocket
 ind.rocket.pos = 200
 ind.rocket.engine_force = 10
 ind.rocket.engine_on = False
-d.data.append({'ds': 0.0, 'pos': ind.rocket.pos})
+d.data.append({'ds': 0.0, 'pos': ind.rocket.pos, 'failed': False, 'landed': True})
 for t in range(120):
     ds, _ = ind.update(t)
-    d.data.append({'ds': ds, 'pos': ind.rocket.pos})
+    d.data.append({'ds': ds, 'pos': ind.rocket.pos, 'failed': ind.rocket.has_failed, 'landed': ind.rocket.has_landed})
 
-reply_single_rocket(d)
+reply_single_rocket(d, 300)
