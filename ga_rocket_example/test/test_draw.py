@@ -1,4 +1,3 @@
-import numpy as np
 from graphics import *
 from ga_rocket_example.functions import get_rocket_shape
 from ga_rocket_example.config import WINDOW_SIZE

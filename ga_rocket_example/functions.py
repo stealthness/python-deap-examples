@@ -7,7 +7,13 @@ from ga_rocket_example import config
 from ga_rocket_example.config import ROCKET_SIZE, WINDOW_SIZE, TARGET_POSITION
 
 
-def get_rocket_shape(center: Point, rocket_direction:int) -> Polygon:
+def get_rocket_shape(center: Point, rocket_direction: int) -> Polygon:
+    """
+    Returns a simple rocket shape, which is a triangle, pointing in the direction at center
+    :param center:
+    :param rocket_direction:
+    :return: Polygon shape
+    """
     tip = rotate_about_centre(center, ROCKET_SIZE, rocket_direction)
     bottom_left = rotate_about_centre(center, ROCKET_SIZE // 2, rocket_direction + 120)
     bottom_right = rotate_about_centre(center, ROCKET_SIZE // 2, rocket_direction + 240)
