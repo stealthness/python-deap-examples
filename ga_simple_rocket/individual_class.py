@@ -6,7 +6,7 @@ from random import random
 
 from ga_rocket_example import config
 from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS, TOL
-from simple_rocket.rocket import SimpleRocket
+from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
 class Individual:

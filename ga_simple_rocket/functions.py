@@ -4,7 +4,7 @@ This file is to be used for function for simple rocket
 from graphics import Polygon, Point, Line
 
 from ga_simple_rocket.config import MAX_ROCKET_HEIGHT, WIN_ADJUST
-from simple_rocket.rocket import SimpleRocket
+from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
 def get_rocket_shape(point) -> Polygon:

@@ -2,11 +2,10 @@
 This is the main code for the simple rocket example
 """
 from graphics import *
-from random import random
 
 from ga_simple_rocket.config import *
 from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color, get_ground_and_sky_limit
-from simple_rocket.individual import Individual
+from ga_simple_rocket.individual_class import Individual
 
 # create the GUI Grapthwin to add graphics to
 win = GraphWin('Face', WINDOW_SIZE[0], WINDOW_SIZE[1])  # give title and dimensions

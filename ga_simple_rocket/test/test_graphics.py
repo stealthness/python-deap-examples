@@ -8,7 +8,7 @@ from ga_simple_rocket.config import *
 from ga_simple_rocket.functions import get_rocket_shape, set_rocket_color, get_ground_and_sky_limit
 
 # create the GUI Grapthwin to add graphics to
-from simple_rocket.individual import Individual
+from ga_simple_rocket.individual_class import Individual
 
 # give title and dimensions
 win = GraphWin('Simple Rocket Test', WINDOW_SIZE[0], WINDOW_SIZE[1])

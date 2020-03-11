@@ -1,7 +1,7 @@
 import unittest
 
 from ga_simple_rocket.config import *
-from simple_rocket.individual import Individual
+from ga_simple_rocket.individual_class import Individual
 
 
 class MyTestCase(unittest.TestCase):

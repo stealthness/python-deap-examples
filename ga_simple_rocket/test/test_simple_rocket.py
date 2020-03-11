@@ -15,7 +15,7 @@ ds  = (v - u)*dt/2
 
 import unittest
 from ga_rocket_example import config
-from simple_rocket.rocket import SimpleRocket
+from ga_simple_rocket.simple_rocket_class import SimpleRocket
 TOL: float = 0.001
 
 class MyTestCase(unittest.TestCase):
