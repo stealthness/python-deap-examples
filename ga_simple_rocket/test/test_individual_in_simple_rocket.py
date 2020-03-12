@@ -44,6 +44,7 @@ class MyTestCase(unittest.TestCase):
         t = 0
         self.individual.commands = [0]*100
         self.individual.rocket.engine_force = 40
+        self.individual.rocket.pos = 100
         while t < 100:
             self.individual.update(t)
             t += 1
