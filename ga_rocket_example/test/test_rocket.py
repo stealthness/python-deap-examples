@@ -1,8 +1,12 @@
+"""
+Testing the Rocket class
+"""
 import unittest
 import numpy as np
 from ga_rocket_example.rocket_class import Rocket
 
 TOL = 0.0001
+
 
 class MyTestCase(unittest.TestCase):
 

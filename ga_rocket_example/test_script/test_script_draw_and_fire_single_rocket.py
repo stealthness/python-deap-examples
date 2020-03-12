@@ -1,7 +1,7 @@
 import numpy as np
 from graphics import *
 from ga_rocket_example.config import *
-from ga_rocket_example.functions import get_rocket_shape
+from ga_rocket_example.functions import get_rocket_shape, convert_position_point, rotate_rocket_shape
 from ga_rocket_example.config import WINDOW_SIZE
 from ga_rocket_example.rocket_class import Rocket
 from ga_simple_rocket.functions import get_ground_and_sky_limit
@@ -11,6 +11,7 @@ win = GraphWin('Face', WINDOW_SIZE[0], WINDOW_SIZE[1])  # give title and dimensi
 
 rocket = Rocket('r0')
 rocket.main_engine_on = True
+rocket.main_engine_max_force = 40
 
 start_point = Point(win.getWidth()//2, win.getHeight() - WIN_ADJUST)
 
@@ -19,7 +20,9 @@ shape.draw(win)
 
 t = 0
 while t < MAX_TIME_INTERVALS:
-    dx, dy = rocket.update([0, 1, 0])
+    dx, dy, dr = rocket.update([0, 1, 0])
+    print(rocket.pos)
+    rotate_rocket_shape(shape,convert_position_point(rocket.pos), dr)
     shape.move(dx, dy)
     t += 1
 

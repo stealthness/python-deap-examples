@@ -19,7 +19,8 @@ class Rocket:
         self.main_engine_max_force: int = ROCKET_MAIN_ENGINE_FORCE
         self.rotational_engine_force = ROCKET_ROTATIONAL_ENGINE_FORCE
         self.time_interval = 1 / TIME_INTERVALS_PER_SEC
-        self.has_exploded = False
+        self.has_failed = False
+        # logging info
         self.verbose = True
         logging.basicConfig(level=logging.DEBUG)
         self.logger = logging.getLogger(f'Rocket:{name}')
@@ -28,9 +29,9 @@ class Rocket:
         return self.name
 
     def update(self, command) -> np.array:
-        if self.has_exploded:
+        if self.has_failed:
             self.logger.debug(f'No update - Rocket has exploded')
-            return np.array((0, 0), dtype=float)
+            return 0.0, 0.0
         else:
             delta_time = 1.0 / float(TIME_INTERVALS_PER_SEC)
 
@@ -40,7 +41,7 @@ class Rocket:
             # update acceleration, engine is on if commands[1] == 1
             if command[1] == 1:
                 self.main_engine_on = True
-            self.calculate_new_acceleration()
+            dr = self.calculate_new_acceleration()
 
             # update velocity
             self.vel += self.acc.copy() / delta_time
@@ -56,7 +57,7 @@ class Rocket:
 
             # return the change in position
             self.logger.debug(f'pos: {self.pos}, vel: {self.vel}, acc {self.acc}')
-        return dx, dy
+        return dx, dy, dr
 
     def check_in_area(self):
         if self.pos[1] < GROUND_LEVEL:
@@ -93,19 +94,21 @@ class Rocket:
             new_acceleration = self.acc + GRAVITY
         return new_acceleration
 
-    def calculate_new_direction(self, commands):
+    def calculate_new_direction(self, command):
         """
         calculates the new direction of the rocket
-        :param commands:
+        :param command:
         """
-        if commands[0] == 1 and commands[2] == 0:
+        if command[0] == 1 and command[2] == 0:
             self.logger.debug(f'Fire left engine')
             self.dir += ROCKET_ROTATIONAL_ENGINE_FORCE
-        elif commands[0] == 0 and commands[2] == 1:
+            return ROCKET_ROTATIONAL_ENGINE_FORCE
+        elif command[0] == 0 and command[2] == 1:
             self.logger.debug(f'Fire left engine')
             self.dir -= ROCKET_ROTATIONAL_ENGINE_FORCE
+            return -ROCKET_ROTATIONAL_ENGINE_FORCE
         else:
-            print('no turn')
+            return 0
 
     # DEBUG TOOLS
 
