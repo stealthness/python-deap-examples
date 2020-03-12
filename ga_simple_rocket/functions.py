@@ -2,6 +2,7 @@
 This file is to be used for function for simple rocket
 """
 from graphics import Polygon, Point, Line, Text, GraphWin, time
+from random import random, uniform
 
 from sklearn.utils import Bunch
 
@@ -115,3 +116,19 @@ def color_shape(shape, has_failed, has_landed):
         shape.setFill('red')
     elif has_landed:
         shape.setFill('green')
+
+
+def select_roulette(individuals, k):
+    sorted_inds = sorted(individuals, reverse=True)
+    sum_fits = sum(ind.fitness[0] for ind in individuals)
+    chosen = []
+    for i in range(k):
+        r = uniform(0, sum_fits)
+        sum_ = 0
+        for ind in sorted_inds:
+            sum_ += ind.fitness[0]
+            if sum_ > r:
+                chosen.append(ind)
+                break
+
+    return chosen

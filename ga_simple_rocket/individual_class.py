@@ -2,6 +2,7 @@
 This file holds the class Individual
 """
 import math
+from copy import deepcopy
 from random import random
 import numpy as np
 
@@ -26,8 +27,27 @@ class Individual:
         self.commands = []
         self.generate_commands()
 
+    def __iter__(self):
+        self.n = 0
+        return self
+
+    def __next__(self):
+        if self.n > len[self.commands]:
+            raise StopIteration
+        self.n += 1
+        return self.commands[self.n]
+
     def __str__(self):
         return f'name: {self.rocket.name}, fitness:{self.fitness:.3f}, rocket:{self.rocket}'
+
+    def __lt__(self, other):
+        return self.fitness < other.fitness
+
+    def __gt__(self, other):
+        return self.fitness > other.fitness
+
+    def __eq__(self, other):
+        return self.fitness == other.fitness
 
     def update(self, t):
         """
