@@ -9,7 +9,7 @@ from deap import tools
 
 from ga_simple_rocket.config import MAX_TIME_INTERVALS
 from ga_simple_rocket.individual_class import Individual
-from ga_simple_rocket.functions import select_roulette
+from ga_simple_rocket.functions import select_roulette, mutate_individual
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", Individual, fitness=creator.FitnessMax)
@@ -30,6 +30,9 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 
 def eval_fitness(individual):
+    # run the rocket commanda
+    for t in range(MAX_TIME_INTERVALS):
+        _, _ = individual.update(t)
     return individual.fitness,
 
 # Create random seed
@@ -48,7 +51,7 @@ toolbox.register("mate", tools.cxTwoPoint)
 
 # register a mutation operator with a probability to
 # flip each attribute/gene of 0.05
-toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
+toolbox.register("mutate", mutate_individual, indpb=0.05)
 
 # operator for selecting individuals for breeding the next
 # generation: each individual of the current generation
@@ -63,6 +66,7 @@ CXPB, MUTPB = 0.5, 0.2
 # Evaluate the entire population
 fitnesses = list(map(toolbox.evaluate, pop))
 for ind, fit in zip(pop, fitnesses):
+
     ind.fitness = fit
 
 # Extracting all the fitnesses of
@@ -70,7 +74,7 @@ fits = [ind.fitness[0] for ind in pop]
 
 g = 0
 
-while max(fits) > 0.0 and g < 10:
+while max(fits) > 0.0 and g < 100:
     # A new generation
     g = g + 1
     print(f"-- Generation {g} --")
@@ -78,4 +82,10 @@ while max(fits) > 0.0 and g < 10:
     # Select the next generation individuals
     offspring = toolbox.select(pop, len(pop))
 
-    for x in range(5,10):
+    for mutant in offspring:
+        # mutate an individual with probability MUTPB
+        if random.random() < MUTPB:
+            toolbox.mutate(mutant)
+
+    for x in range(5, 10):
+        print('l')

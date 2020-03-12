@@ -7,6 +7,7 @@ from random import random, uniform
 from sklearn.utils import Bunch
 
 from ga_simple_rocket.config import MAX_ROCKET_HEIGHT, WIN_ADJUST, WINDOW_SIZE, REFRESH_RATE, ROCKET_SIZE
+from ga_simple_rocket.individual_class import Individual
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
@@ -132,3 +133,10 @@ def select_roulette(individuals, k):
                 break
 
     return chosen
+
+
+def mutate_individual(individual: Individual, indpb: float):
+    for i in range(len(individual.commands)):
+        if random() < indpb:
+            individual.commands[i] = type(individual.commands[i])(not individual.commands[i])
+    return individual,

@@ -49,6 +49,9 @@ class Individual:
     def __eq__(self, other):
         return self.fitness == other.fitness
 
+    def __len__(self):
+        return len(self.commands)
+
     def update(self, t):
         """
         Updates the the Individuals rocket for command[t]. Returns the displacement and fitness
@@ -76,9 +79,12 @@ class Individual:
         :return: fitness of the individual
         """
         if self.has_failed():
-            return 1.0
+            if self.rocket.vel > 100:
+                return 0.9 + self.rocket.vel/10
+            else:
+                return 1.0
         if self.rocket.pos - self.target < 1e-10:
-            return 1.0
+            return 0.0
         else:
             return 1 / (1 + 1/np.abs(self.rocket.pos - self.target))
 
