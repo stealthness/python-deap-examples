@@ -3,9 +3,6 @@ import unittest
 from ga_simple_rocket.config import *
 from ga_simple_rocket.individual_class import Individual
 
-
-
-
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
