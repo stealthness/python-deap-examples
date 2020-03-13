@@ -11,7 +11,7 @@ class Rocket:
 
     def __init__(self, name: str):
         self.name = name
-        self.acc = np.array([0.0, 0.0])
+        self.acc = GRAVITY
         self.vel = np.array([0.0, 0.0])
         self.pos = np.array(START_POSITION, dtype=float)
         self.dir: int = 0
@@ -31,22 +31,22 @@ class Rocket:
     def update(self, command) -> np.array:
         if self.has_failed:
             self.logger.debug(f'No update - Rocket has exploded')
-            return 0.0, 0.0
+            return 0.0, 0.0, 0
         else:
             delta_time = 1.0 / float(TIME_INTERVALS_PER_SEC)
 
             # update direction
-            self.calculate_new_direction(command)
+            dr = self.calculate_new_direction(command)
 
             # update acceleration, engine is on if commands[1] == 1
             if command[1] == 1:
                 self.main_engine_on = True
-            dr = self.calculate_new_acceleration()
+            self.calculate_new_acceleration()
 
             # update velocity
-            self.vel += self.acc.copy() / delta_time
             dvx = self.acc[0] * delta_time
             dvy = self.acc[1] * delta_time
+            self.vel += np.array([dvx, dvy])
 
             # update position
             dx = (self.vel[0] - self.acc[0] * delta_time/2) * delta_time
@@ -89,9 +89,9 @@ class Rocket:
         new_acceleration = self.acc.copy()
         if self.main_engine_on:
             rocket_acc = np.array([np.sin(self.dir), np.cos(self.dir)]) * self.main_engine_max_force
-            new_acceleration = self.acc + GRAVITY + rocket_acc
+            new_acceleration = GRAVITY + rocket_acc
         else:
-            new_acceleration = self.acc + GRAVITY
+            new_acceleration = GRAVITY
         return new_acceleration
 
     def calculate_new_direction(self, command):
