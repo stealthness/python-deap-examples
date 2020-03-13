@@ -14,8 +14,7 @@ class TestIndividualFitness(MyTest):
 
     def test_success_t_0(self):
         self.assert_individual(self.individual, exp_name='test')
-        self.individual.rocket.pos = 0.0
-        self.individual.rocket.vel = 0.0
+        self.individual.set(pos=0.0, vel=0.0)
         self.individual.calculate_fitness(0, 100)
         exp_fitness = 0.0
 
@@ -27,8 +26,7 @@ class TestIndividualFitness(MyTest):
 
     def test_fail_crash(self):
         self.assert_individual(self.individual, exp_name='test')
-        self.individual.rocket.pos = -10.0
-        self.individual.rocket.vel = -10.0
+        self.individual.set(pos=-10.0, vel=-10.0)
         self.individual.calculate_fitness(10, 100)
         exp_fitness = 1.0
 

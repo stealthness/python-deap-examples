@@ -28,6 +28,14 @@ class Individual:
         self.generate_commands()
         self.max_time = MAX_TIME_INTERVALS
 
+    def __setattr__(self, key, value):
+        if 'pos' == key:
+            self.rocket.pos = value
+        if 'vel' == key:
+            self.rocket.pos = value
+        else:
+            super().__setattr__(key, value)
+
     def __iter__(self):
         self.n = 0
         return self
@@ -120,7 +128,18 @@ class Individual:
             if random() < GENERATE_ENGINE_PROB_FIRE and GENERATE_RANDOM_COMMANDS:
                 self.commands.append(1)
             else:
-                self.commands.append(0)
+                self.commands.append(0)#
+
+    def set(self, **kwargs):
+        if 'name' in kwargs:
+            self.rocket.name = kwargs['name']
+        if 'pos' in kwargs:
+            self.rocket.pos = kwargs['pos']
+        if 'vel' in kwargs:
+            self.rocket.pos =  kwargs['vel']
+        if 'acc' in kwargs:
+            self.rocket.acc =  kwargs['acc']
+
 
 
 
