@@ -4,6 +4,8 @@ from ga_simple_rocket.config import *
 from ga_simple_rocket.individual_class import Individual
 
 
+
+
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -11,8 +13,7 @@ class MyTestCase(unittest.TestCase):
         self.individual.target = 0.0
 
     def test_create_individual(self):
-        self.assertFalse(self.individual.rocket.has_failed)
-        self.assertEqual('r0', self.individual.rocket.name)
+        self.assert_individual(self.individual, exp_name='r0', has_failed=False)
 
     def test_rocket_crashed_below_ground(self):
         self.individual.rocket.pos = GROUND_LEVEL - 10.0
@@ -51,6 +52,25 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(self.individual.has_failed(), f'has crashed {self.individual.rocket.pos}')
 
 
+    def assert_rocket(self, rocket, **kwargs):
+        if type(rocket) is Individual:
+            rocket = rocket.rocket
+        if 'exp_name' in kwargs:
+            self.assertEqual(kwargs['exp_name'], rocket.name)
+        if 'exp_pos' in kwargs:
+            self.assertEqual(kwargs['exp_pos'], rocket.pos)
+        if 'exp_vel' in kwargs:
+            self.assertEqual(kwargs['exp_vel'], rocket.vel)
+        if 'exp_acc' in kwargs:
+            self.assertEqual(kwargs['exp_acc'], rocket.acc)
+        if 'has_failed' in kwargs:
+            self.assertEqual(kwargs['has_failed'], rocket.has_failed)
+        if 'has_landed' in kwargs:
+            self.assertEqual(kwargs['has_landed'], rocket.has_landed)
+
+
+    def assert_individual(self, individual, **kwargs):
+        self.assert_rocket(individual, **kwargs)
 
 
 if __name__ == '__main__':
