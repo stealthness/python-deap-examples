@@ -51,26 +51,23 @@ class MyTestCase(unittest.TestCase):
             t += 1
         self.assert_individual(self.individual, has_failed=True)
 
-
     def assert_rocket(self, rocket, **kwargs):
         if type(rocket) is Individual:
             if 'fitness' in kwargs:
                 self.assertAlmostEqual(kwargs['fitness'], rocket.fitness, TOL)
             rocket = rocket.rocket
         if 'exp_name' in kwargs:
-            self.assertEqual(kwargs['exp_name'], rocket.name)
+            self.assertEqual(kwargs['exp_name'], rocket.name, 'name')
         if 'exp_pos' in kwargs:
-            self.assertEqual(kwargs['exp_pos'], rocket.pos)
+            self.assertEqual(kwargs['exp_pos'], rocket.pos, 'pos')
         if 'exp_vel' in kwargs:
-            self.assertEqual(kwargs['exp_vel'], rocket.vel)
+            self.assertEqual(kwargs['exp_vel'], rocket.vel, 'vel')
         if 'exp_acc' in kwargs:
-            self.assertEqual(kwargs['exp_acc'], rocket.acc)
+            self.assertEqual(kwargs['exp_acc'], rocket.acc, 'acc')
         if 'has_failed' in kwargs:
             self.assertEqual(kwargs['has_failed'], rocket.has_failed)
         if 'has_landed' in kwargs:
             self.assertEqual(kwargs['has_landed'], rocket.has_landed)
-
-
 
     def assert_individual(self, individual, **kwargs):
         self.assert_rocket(individual, **kwargs)
