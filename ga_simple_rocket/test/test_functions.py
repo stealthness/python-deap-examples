@@ -53,6 +53,32 @@ class MyTest(unittest.TestCase):
         """
         self.assert_rocket(individual, **kwargs)
 
+    def set_rocket(self, test_item, **kwargs):
+        """
+
+        :param test_item:
+        :param kwargs:
+        :return:
+        """
+        if type(test_item) is Individual:
+            rocket = test_item.rocket
+        else:
+            rocket = test_item
+        if 'pos' in kwargs:
+            rocket.pos = kwargs['pos']
+        if 'vel' in kwargs:
+            rocket.pos = kwargs['vel']
+        if 'acc' in kwargs:
+            rocket.pos = kwargs['acc']
+        if 'has_landed' in kwargs:
+            rocket.pos = kwargs['has_landed']
+        if 'has_failed' in kwargs:
+            rocket.pos = kwargs['has_failed']
+
+
+    def set_individual(self, individual, **kwargs):
+        self.set_rocket(individual, **kwargs)
+
 
 if __name__ == '__main__':
     unittest.main()

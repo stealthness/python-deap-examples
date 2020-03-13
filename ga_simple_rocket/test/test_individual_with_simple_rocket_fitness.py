@@ -25,8 +25,6 @@ class TestIndividualFitness(MyTest):
 
         self.assertEqual('test', self.individual.rocket.name)
 
-
-
     def test_fail_crash(self):
         self.assert_individual(self.individual, exp_name='test')
         self.individual.rocket.pos = -10.0
@@ -38,3 +36,4 @@ class TestIndividualFitness(MyTest):
 
         self.assert_individual(self.individual, has_landed=False, has_failed=True)
         self.assertEqual('test', self.individual.rocket.name)
+

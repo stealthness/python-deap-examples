@@ -9,16 +9,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 class SimpleRocket:
 
-    def __init__(self, name, engine_force=20) -> float:
-        self.pos: float = 0.0
-        self.vel: float = 0.0
-        self.acc: float = 0.0
+    def __init__(self, name, engine_force=20, engine_on=False, pos=0.0, vel=0.0, acc=-9.8) -> float:
         self.name = name
+        self.pos: float = pos
+        self.vel: float = vel
+        self.acc: float = acc
         self.engine_force: float = engine_force
-        self.engine_on = False
+        self.engine_on = engine_on
         self.has_failed = False
         self.has_landed = False
-        #self.logger = logging.getLogger(self.name)
+        self.logger = logging.getLogger(self.name)
 
     def __str__(self):
         return f'name:{self.name}, pos:{self.pos}, vel:{self.vel}, acc:{self.acc} \n landed:{self.has_landed}, crashed:{self.has_failed}'
