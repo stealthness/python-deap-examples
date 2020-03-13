@@ -7,9 +7,8 @@ from graphics import Point
 from sklearn.utils import Bunch
 
 from ga_simple_rocket.config import MAX_TIME_INTERVALS
-from ga_simple_rocket.functions import reply_single_rocket, get_rocket_shape, reply_multiple_rocket
+from ga_simple_rocket.functions import reply_multiple_rocket
 from ga_simple_rocket.individual_class import Individual
-from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 number_of_rockets = 5
 

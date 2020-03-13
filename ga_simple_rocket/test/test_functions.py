@@ -11,10 +11,12 @@ class MyTest(unittest.TestCase):
 
     def assert_rocket(self, test_item, **kwargs):
         """
-
-        :param rocket:
+        Assert Test for Individual and Rockets classes
+        :param test_item: Individual or Rocket class
         :param kwargs:
-        :return:
+            'exp_name'
+            'exp_pos'
+        :return: None
         """
         if type(test_item) is Individual:
             if 'fitness' in kwargs:
@@ -36,6 +38,14 @@ class MyTest(unittest.TestCase):
             self.assertEqual(kwargs['has_landed'], rocket.has_landed)
 
     def assert_individual(self, individual, **kwargs):
+        """
+        Assert Test for Individual and Rockets classes
+        :param individual: Individual class
+        :param kwargs:
+            'exp_name'
+            'exp_pos'
+        :return: None
+        """
         self.assert_rocket(individual, **kwargs)
 
 
