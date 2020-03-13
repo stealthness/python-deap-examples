@@ -11,13 +11,15 @@ ds  = (v - u)*dt/2
     = (a*dt^2)/2
 
 """
-import unittest
 from ga_rocket_example import config
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
+from ga_simple_rocket.test.test_functions import MyTest
+# MyTest extends unittest
+
 TOL: float = 0.001
 
 
-class MyTestCase(unittest.TestCase):
+class MyTestCase(MyTest):
 
     def setUp(self):
         self.r = SimpleRocket('rocket')
@@ -78,4 +80,4 @@ class MyTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    MyTest.main()
