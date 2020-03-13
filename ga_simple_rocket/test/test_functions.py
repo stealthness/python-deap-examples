@@ -9,6 +9,8 @@ from ga_simple_rocket.individual_class import Individual
 
 class MyTest(unittest.TestCase):
 
+    TOL: float = 0.0001
+
     def assert_rocket(self, test_item, **kwargs):
         """
         Assert Test for Individual and Rockets classes
@@ -20,16 +22,19 @@ class MyTest(unittest.TestCase):
         """
         if type(test_item) is Individual:
             if 'fitness' in kwargs:
-                self.assertAlmostEqual(kwargs['fitness'], test_item.fitness, TOL)
+                self.assertAlmostEqual(kwargs['fitness'], test_item.fitness,
+                                       delta=TOL, msg=f'exp:{kwargs["fitness"]}, act:{kwargs["fitness"]}')
             rocket = test_item.rocket
         else:
             rocket = test_item
         if 'exp_name' in kwargs:
-            self.assertEqual(kwargs['exp_name'], rocket.name, 'name')
+            self.assertEqual(kwargs['exp_name'], rocket.name, msg=f'exp:{kwargs["exp_name"]}, act:{rocket.name}')
         if 'exp_pos' in kwargs:
-            self.assertEqual(kwargs['exp_pos'], rocket.pos, 'pos')
+            self.assertAlmostEqual(kwargs['exp_pos'], rocket.pos,
+                                   delta=TOL, msg=f'exp:{kwargs["exp_pos"]}, act:{rocket.pos}')
         if 'exp_vel' in kwargs:
-            self.assertEqual(kwargs['exp_vel'], rocket.vel, 'vel')
+            self.assertAlmostEqual(kwargs['exp_vel'], rocket.vel,
+                                   delta=TOL, msg=f'exp:{kwargs["exp_pos"]}, act:{rocket.pos}')
         if 'exp_acc' in kwargs:
             self.assertEqual(kwargs['exp_acc'], rocket.acc, 'acc')
         if 'has_failed' in kwargs:

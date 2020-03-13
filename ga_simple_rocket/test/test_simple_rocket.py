@@ -16,8 +16,6 @@ from ga_simple_rocket.simple_rocket_class import SimpleRocket
 from ga_simple_rocket.test.test_functions import MyTest
 # MyTest extends unittest
 
-TOL: float = 0.001
-
 
 class MyTestCase(MyTest):
 
@@ -30,53 +28,53 @@ class MyTestCase(MyTest):
     def test_create(self):
         exp_name = 'rocket'
         self.assertEqual(exp_name, self.r.name)
-        self.assertAlmostEqual(0.0, self.r.pos, delta=TOL, msg="pos")
-        self.assertAlmostEqual(0.0, self.r.vel, delta=TOL, msg='vel')
-        self.assertAlmostEqual(0.0, self.r.acc, delta=TOL, msg='acc')
+        self.assertAlmostEqual(0.0, self.r.pos, delta=MyTest.TOL, msg="pos")
+        self.assertAlmostEqual(0.0, self.r.vel, delta=MyTest.TOL, msg='vel')
+        self.assertAlmostEqual(0.0, self.r.acc, delta=MyTest.TOL, msg='acc')
 
     def test_rocket_after_1s_update(self):
         for x in range(config.TIME_INTERVALS):
             self.r.update()
-        self.assertAlmostEqual(-4.9, self.r.pos, delta=TOL, msg='pos')
-        self.assertAlmostEqual(-9.8, self.r.vel, delta=TOL, msg='vel')
-        self.assertAlmostEqual(-9.8, self.r.acc, delta=TOL, msg='acc')
+        self.assertAlmostEqual(-4.9, self.r.pos, delta=MyTest.TOL, msg='pos')
+        self.assertAlmostEqual(-9.8, self.r.vel, delta=MyTest.TOL, msg='vel')
+        self.assertAlmostEqual(-9.8, self.r.acc, delta=MyTest.TOL, msg='acc')
 
     def test_rocket_after_3s_update(self):
         for x in range(3*config.TIME_INTERVALS):
             self.r.update()
-        self.assertAlmostEqual(-44.1, self.r.pos, delta=TOL, msg='pos')
-        self.assertAlmostEqual(-29.4, self.r.vel, delta=TOL, msg='vel')
-        self.assertAlmostEqual(-9.8, self.r.acc, delta=TOL, msg='acc')
+        self.assertAlmostEqual(-44.1, self.r.pos, delta=MyTest.TOL, msg='pos')
+        self.assertAlmostEqual(-29.4, self.r.vel, delta=MyTest.TOL, msg='vel')
+        self.assertAlmostEqual(-9.8, self.r.acc, delta=MyTest.TOL, msg='acc')
 
     def test_config_gravity_1d(self):
-        self.assertAlmostEqual(float(-9.8), config.GRAVITY_1d, TOL)
+        self.assertAlmostEqual(float(-9.8), config.GRAVITY_1d, MyTest.TOL)
 
     def test_config_engine_on_in_equilibrium(self):
         self.r.engine_force = -config.GRAVITY_1d
         self.r.engine_on = True
         for i in range(100):
             self.r.update()
-            self.assertAlmostEqual(-0.0, self.r.pos, delta=TOL, msg='pos')
-            self.assertAlmostEqual(-0.0, self.r.vel, delta=TOL, msg='vel')
-            self.assertAlmostEqual(-0.0, self.r.acc, delta=TOL, msg='acc')
+            self.assertAlmostEqual(-0.0, self.r.pos, delta=MyTest.TOL, msg='pos')
+            self.assertAlmostEqual(-0.0, self.r.vel, delta=MyTest.TOL, msg='vel')
+            self.assertAlmostEqual(-0.0, self.r.acc, delta=MyTest.TOL, msg='acc')
 
     def test_rocket_after_1s_update_engine_on(self):
         self.r.engine_force = -config.GRAVITY_1d*2
         self.r.engine_on = True
         for x in range(config.TIME_INTERVALS):
             self.r.update()
-        self.assertAlmostEqual(4.9, self.r.pos, delta=TOL, msg='pos')
-        self.assertAlmostEqual(9.8, self.r.vel, delta=TOL, msg='vel')
-        self.assertAlmostEqual(9.8, self.r.acc, delta=TOL, msg='acc')
+        self.assertAlmostEqual(4.9, self.r.pos, delta=MyTest.TOL, msg='pos')
+        self.assertAlmostEqual(9.8, self.r.vel, delta=MyTest.TOL, msg='vel')
+        self.assertAlmostEqual(9.8, self.r.acc, delta=MyTest.TOL, msg='acc')
 
     def test_rocket_after_3s_update_engine(self):
         self.r.engine_force = -config.GRAVITY_1d*2
         self.r.engine_on = True
         for x in range(3*config.TIME_INTERVALS):
             self.r.update()
-        self.assertAlmostEqual(44.1, self.r.pos, delta=TOL, msg='pos')
-        self.assertAlmostEqual(29.4, self.r.vel, delta=TOL, msg='vel')
-        self.assertAlmostEqual(9.8, self.r.acc, delta=TOL, msg='acc')
+        self.assertAlmostEqual(44.1, self.r.pos, delta=MyTest.TOL, msg='pos')
+        self.assertAlmostEqual(29.4, self.r.vel, delta=MyTest.TOL, msg='vel')
+        self.assertAlmostEqual(9.8, self.r.acc, delta=MyTest.TOL, msg='acc')
 
 
 if __name__ == '__main__':

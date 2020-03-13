@@ -26,6 +26,7 @@ class Individual:
         self.target: float = config.GROUND_LEVEL
         self.commands = []
         self.generate_commands()
+        self.max_time = MAX_TIME_INTERVALS
 
     def __iter__(self):
         self.n = 0
@@ -60,33 +61,36 @@ class Individual:
         """
         if self.rocket.has_failed:
             ds = 0.0
-            fitness = 1.0
         elif self.rocket.has_landed:
             ds = 0.0
-            fitness = 0.0
         else:
             if self.commands[t] == 1:
                 self.rocket.engine_on = True
             else:
                 self.rocket.engine_on = False
             ds = self.rocket.update()
-            fitness = self.calculate_fitness()
-        return ds, fitness
+        self.calculate_fitness(t, self.max_time)
+        return ds, self.fitness
 
-    def calculate_fitness(self) -> float:
+    def calculate_fitness(self, t: int, max_t) -> float:
         """
         Calculates the the fitness of the rocket position from the target location
+        :param: time
+        :param: max time allowed
         :return: fitness of the individual
         """
         if self.has_failed():
-            if self.rocket.vel > 100:
-                return 0.9 + self.rocket.vel/10
+            self.fitness = 1.0
+            return 1.0
+        elif self.has_landed():
+            if t == 0:
+                self.fitness = 0.0
+                return 0.0
             else:
-                return 1.0
-        if self.rocket.pos - self.target < 1e-10:
-            return 0.0
+                self.fitness = max_t / 2*t
+                return max_t / 2*t
         else:
-            return 1 / (1 + 1/np.abs(self.rocket.pos - self.target))
+            return 0.5 + 1/(self.rocket.pos - self.target)
 
     def has_failed(self) -> bool:
         """
@@ -106,8 +110,8 @@ class Individual:
             return False
 
     def has_landed(self) -> bool:
-        TOL = 10
-        if self.rocket.pos < config.GROUND_LEVEL + TOL and -TOL < self.rocket.vel < TOL :
+        HEIGHT_TOL = 10
+        if self.rocket.pos < config.GROUND_LEVEL + HEIGHT_TOL and -HEIGHT_TOL < self.rocket.vel < HEIGHT_TOL:
             self.rocket.has_landed = True
             return True
 
