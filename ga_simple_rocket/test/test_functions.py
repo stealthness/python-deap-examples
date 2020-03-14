@@ -11,7 +11,7 @@ class MyTest(unittest.TestCase):
 
     TOL: float = 0.0001
 
-    def assert_rocket(self, test_item, **kwargs):
+    def assertTestItem(self, test_item, **kwargs):
         """
         Assert Test for Individual and Rockets classes
         :param test_item: Individual or Rocket class
@@ -42,7 +42,18 @@ class MyTest(unittest.TestCase):
         if 'has_landed' in kwargs:
             self.assertEqual(kwargs['has_landed'], rocket.has_landed)
 
-    def assert_individual(self, individual, **kwargs):
+    def assertRocket(self, rocket, **kwargs):
+        """
+        Assert Test for Individual and Rockets classes
+        :param test_item: Individual or Rocket class
+        :param kwargs:
+            'exp_name'
+            'exp_pos'
+        :return: None
+        """
+        self.assertTestItem(rocket, **kwargs)
+
+    def assertIndividual(self, individual, **kwargs):
         """
         Assert Test for Individual and Rockets classes
         :param individual: Individual class
@@ -51,7 +62,7 @@ class MyTest(unittest.TestCase):
             'exp_pos'
         :return: None
         """
-        self.assert_rocket(individual, **kwargs)
+        self.assertTestItem(individual, **kwargs)
 
     def set_rocket(self, test_item, **kwargs):
         """

@@ -26,18 +26,18 @@ class MyTestCase(MyTest):
         self.assertEqual(-9.8, config.GRAVITY_1d)
 
     def test_create(self):
-        self.assert_rocket(self.r, exp_name='rocket', exp_pos=0.0, exp_vel=0.0, exp_acc=0.0)
+        self.assertRocket(self.r, exp_name='rocket', exp_pos=0.0, exp_vel=0.0, exp_acc=0.0)
 
     def test_rocket_after_1s_update(self):
         for x in range(config.TIME_INTERVALS):
             self.r.update()
-        self.assert_rocket(self.r, exp_name='rocket', exp_pos=-4.9, exp_vel=-9.8, exp_acc=-9.8)
+        self.assertRocket(self.r, exp_name='rocket', exp_pos=-4.9, exp_vel=-9.8, exp_acc=-9.8)
 
     def test_rocket_after_3s_update(self):
         for x in range(3*config.TIME_INTERVALS):
             self.r.update()
 
-        self.assert_rocket(self.r, exp_name='rocket', exp_pos=-44.1, exp_vel=-29.4, exp_acc=-9.8)
+        self.assertRocket(self.r, exp_name='rocket', exp_pos=-44.1, exp_vel=-29.4, exp_acc=-9.8)
 
     def test_config_gravity_1d(self):
         self.assertAlmostEqual(float(-9.8), config.GRAVITY_1d, MyTest.TOL)
@@ -47,21 +47,21 @@ class MyTestCase(MyTest):
         self.r.engine_on = True
         for i in range(100):
             self.r.update()
-            self.assert_rocket(self.r, exp_name='rocket', exp_pos=0.0, exp_vel=0.0, exp_acc=0.0)
+            self.assertRocket(self.r, exp_name='rocket', exp_pos=0.0, exp_vel=0.0, exp_acc=0.0)
 
     def test_rocket_after_1s_update_engine_on(self):
         self.r.engine_force = -config.GRAVITY_1d*2
         self.r.engine_on = True
         for x in range(config.TIME_INTERVALS):
             self.r.update()
-        self.assert_rocket(self.r, exp_name='rocket', exp_pos=4.9, exp_vel=9.8, exp_acc=9.8)
+        self.assertRocket(self.r, exp_name='rocket', exp_pos=4.9, exp_vel=9.8, exp_acc=9.8)
 
     def test_rocket_after_3s_update_engine(self):
         self.r.engine_force = -config.GRAVITY_1d*2
         self.r.engine_on = True
         for x in range(3*config.TIME_INTERVALS):
             self.r.update()
-        self.assert_rocket(self.r, exp_name='rocket', exp_pos=44.1, exp_vel=29.4, exp_acc=9.8)
+        self.assertRocket(self.r, exp_name='rocket', exp_pos=44.1, exp_vel=29.4, exp_acc=9.8)
 
 
 if __name__ == '__main__':

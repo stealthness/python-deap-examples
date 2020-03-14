@@ -10,7 +10,7 @@ class MyTestCase(MyTest):
         self.individual = Individual('test')
         self.individual.set(pos=100.0)
         self.individual.set(max_tim=90)
-        self.assert_individual(self.individual, exp_pos=100.0, max_time=90)
+        self.assertIndividual(self.individual, exp_pos=100.0, max_time=90)
 
 
 
