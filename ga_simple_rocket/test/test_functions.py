@@ -13,7 +13,7 @@ class MyTest(unittest.TestCase):
 
     def assertTestItem(self, test_item, **kwargs):
         """
-        Assert Test for Individual and Rockets classes
+        Assert Test for Individual and Rockets classes \n
         :param test_item: Individual or Rocket class
         :param kwargs:
             'exp_name'
@@ -44,8 +44,8 @@ class MyTest(unittest.TestCase):
 
     def assertRocket(self, rocket, **kwargs):
         """
-        Assert Test for Individual and Rockets classes
-        :param test_item: Individual or Rocket class
+        Assert Test for Individual and Rockets classes\n
+        :param rocket: Individual or Rocket class
         :param kwargs:
             'exp_name'
             'exp_pos'
@@ -55,7 +55,7 @@ class MyTest(unittest.TestCase):
 
     def assertIndividual(self, individual, **kwargs):
         """
-        Assert Test for Individual and Rockets classes
+        Assert Test for Individual and Rockets classes\n
         :param individual: Individual class
         :param kwargs:
             'exp_name'

@@ -29,9 +29,7 @@ class TestIndividualFitness(MyTest):
         self.assertIndividual(self.individual, has_landed=False, has_failed=True)
 
     def test_fail_too_high(self):
-        self.individual = Individual('test', pos=550.0, vel=10.0)
-        #self.individual.set(pos=550.0, vel=0.0)
-        print(self.individual.rocket)
+        self.individual.set(pos=550.0, vel=10)
         self.individual.rocket.update()
         self.individual.calculate_fitness(10, 100)
         exp_fitness = 1.0
@@ -39,10 +37,23 @@ class TestIndividualFitness(MyTest):
         self.assertAlmostEqual(exp_fitness, self.individual.fitness, delta=MyTest.TOL, msg=err_msg)
         self.assertIndividual(self.individual, has_landed=False, has_failed=True)
 
-    def test_fail_landed_in_50(self):
-        self.individual.set(pos=100.0, vel=0.0)
+    def test_not_landed_in_50(self):
         self.individual.calculate_fitness(50, 100)
         exp_fitness = 0.5
+        err_msg = f'exp:{exp_fitness}, act:{self.individual.fitness}'
+        self.assertIndividual(self.individual, has_landed=True, has_failed=False, msg=f'{self.individual}')
+        self.assertAlmostEqual(exp_fitness, self.individual.fitness, delta=MyTest.TOL, msg=err_msg)
+
+    def test_landed_in_50(self):
+        self.individual.calculate_fitness(20, 100)
+        exp_fitness = 0.8
+        err_msg = f'exp:{exp_fitness}, act:{self.individual.fitness}'
+        self.assertIndividual(self.individual, has_landed=True, has_failed=False, msg=f'{self.individual}')
+        self.assertAlmostEqual(exp_fitness, self.individual.fitness, delta=MyTest.TOL, msg=err_msg)
+
+    def test_landed_in_50(self):
+        self.individual.calculate_fitness(90, 100)
+        exp_fitness = 0.1
         err_msg = f'exp:{exp_fitness}, act:{self.individual.fitness}'
         self.assertIndividual(self.individual, has_landed=True, has_failed=False, msg=f'{self.individual}')
         self.assertAlmostEqual(exp_fitness, self.individual.fitness, delta=MyTest.TOL, msg=err_msg)

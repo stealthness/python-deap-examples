@@ -20,22 +20,12 @@ class Individual:
     """
 
     def __init__(self, name, **kwargs):
-        self.rocket = SimpleRocket(name)
+        self.rocket = SimpleRocket(name, **kwargs)
         self.fitness: float = 1.0
         self.target: float = GROUND_LEVEL
         self.commands = []
         self.generate_commands()
         self.max_time = MAX_TIME_INTERVALS
-
-    def __setattr__(self, key, value):
-        if 'pos' == key:
-            self.rocket.pos = value
-        if 'vel' == key:
-            self.rocket.pos = value
-        else:
-            if key == 'pos':
-                print(f'here: {key}, {value}')
-            super().__setattr__(key, value)
 
     def __iter__(self):
         self.n = 0
@@ -64,9 +54,9 @@ class Individual:
 
     def update(self, t):
         """
-        Updates the the Individuals rocket for command[t]. Returns the displacement and fitness
-        :param t:
-        :return:
+        Updates the the Individuals rocket for command[t]. Returns the displacement and fitness\n
+        :param t: current time interval
+        :return: ds, fitness
         """
         if self.rocket.has_failed:
             ds = 0.0
@@ -139,10 +129,8 @@ class Individual:
             self.rocket.name = kwargs['name']
         if 'pos' in kwargs:
             self.rocket.pos = kwargs['pos']
-            print(self.rocket.pos)
-            print(kwargs['pos'])
         if 'vel' in kwargs:
-            self.rocket.pos = kwargs['vel']
+            self.rocket.vel = kwargs['vel']
         if 'acc' in kwargs:
             self.rocket.acc = kwargs['acc']
 
