@@ -8,6 +8,7 @@ import numpy as np
 
 from ga_rocket_example import config
 from ga_simple_rocket.config import *
+from ga_simple_rocket.functions import fitness_function_simple
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
@@ -22,6 +23,7 @@ class Individual:
     def __init__(self, name, **kwargs):
         self.rocket = SimpleRocket(name, **kwargs)
         self.fitness: float = 1.0
+        self.fitness_function = fitness_function_simple()
         self.target: float = GROUND_LEVEL
         self.commands = []
         self.generate_commands()
@@ -72,27 +74,28 @@ class Individual:
         return ds, self.fitness
 
     def calculate_fitness(self, t: int, max_t=MAX_TIME_INTERVALS) -> float:
-        """
-        Calculates the the fitness of the rocket position from the target location
-            if rocket has failed:
-                then fitness is 1.0
-            if rocket has succeeded:
-                then fitness will be 0.0 + relative time taken
-                relative time will be  1.0 - t / max_time
-        :param: time
-        :param: max time allowed
-        :return: fitness of the individual
-        """
-        if self.has_failed():
-            self.fitness = 1.0
-        elif self.has_landed():
-            if t == 0:
-                self.fitness = 0.0
-            else:
-                self.fitness = 1.0 - t/max_t
-        else:
-            self.fitness = 1.0 - t / max_t
-        return self.fitness
+        # """
+        # Calculates the the fitness of the rocket position from the target location
+        #     if rocket has failed:
+        #         then fitness is 1.0
+        #     if rocket has succeeded:
+        #         then fitness will be 0.0 + relative time taken
+        #         relative time will be  1.0 - t / max_time
+        # :param: time
+        # :param: max time allowed
+        # :return: fitness of the individual
+        # """
+        # if self.rocket.has_failed():
+        #     self.rocket.fitness = 1.0
+        # elif self.rocket.has_landed():
+        #     if t == 0:
+        #         self.rocket.fitness = 0.0
+        #     else:
+        #         self.rocket.fitness = 1.0 - t / max_t
+        # else:
+        #     self.rocket.fitness = 1.0 - t / max_t
+        # return self.rocket.fitness
+        return self.fitness_function(self.rocket, t, max_t)
 
     def has_failed(self) -> bool:
         """
