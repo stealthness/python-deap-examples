@@ -7,8 +7,7 @@ from random import random
 import numpy as np
 
 from ga_rocket_example import config
-from ga_simple_rocket.config import GENERATE_ENGINE_PROB_FIRE, MAX_TIME_INTERVALS, TOL, MAX_ROCKET_HEIGHT, \
-    GENERATE_RANDOM_COMMANDS
+from ga_simple_rocket.config import *
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
@@ -20,10 +19,10 @@ class Individual:
     -- commands (individuals chromosomes)
     """
 
-    def __init__(self, name):
+    def __init__(self, name, **kwargs):
         self.rocket = SimpleRocket(name)
         self.fitness: float = 1.0
-        self.target: float = config.GROUND_LEVEL
+        self.target: float = GROUND_LEVEL
         self.commands = []
         self.generate_commands()
         self.max_time = MAX_TIME_INTERVALS
@@ -34,6 +33,8 @@ class Individual:
         if 'vel' == key:
             self.rocket.pos = value
         else:
+            if key == 'pos':
+                print(f'here: {key}, {value}')
             super().__setattr__(key, value)
 
     def __iter__(self):
@@ -80,25 +81,28 @@ class Individual:
         self.calculate_fitness(t, self.max_time)
         return ds, self.fitness
 
-    def calculate_fitness(self, t: int, max_t) -> float:
+    def calculate_fitness(self, t: int, max_t=MAX_TIME_INTERVALS) -> float:
         """
         Calculates the the fitness of the rocket position from the target location
+            if rocket has failed:
+                then fitness is 1.0
+            if rocket has succeeded:
+                then fitness will be 0.0 + relative time taken
+                relative time will be  1.0 - t / max_time
         :param: time
         :param: max time allowed
         :return: fitness of the individual
         """
         if self.has_failed():
             self.fitness = 1.0
-            return 1.0
         elif self.has_landed():
             if t == 0:
                 self.fitness = 0.0
-                return 0.0
             else:
-                self.fitness = max_t / 2*t
-                return max_t / 2*t
+                self.fitness = 1.0 - t/max_t
         else:
-            return 0.5 + 1/(self.rocket.pos - self.target)
+            self.fitness = 1.0 - t / max_t
+        return self.fitness
 
     def has_failed(self) -> bool:
         """
@@ -135,10 +139,12 @@ class Individual:
             self.rocket.name = kwargs['name']
         if 'pos' in kwargs:
             self.rocket.pos = kwargs['pos']
+            print(self.rocket.pos)
+            print(kwargs['pos'])
         if 'vel' in kwargs:
-            self.rocket.pos =  kwargs['vel']
+            self.rocket.pos = kwargs['vel']
         if 'acc' in kwargs:
-            self.rocket.acc =  kwargs['acc']
+            self.rocket.acc = kwargs['acc']
 
 
 
