@@ -37,7 +37,7 @@ def convert_position_point(position):
     :return: Point
     """
     # rescale to Window size
-    p = position * np.array([1, -1]).astype(dtype=int) + (WINDOW_SIZE // 2 * np.array([1, 2])).astype(dtype=int)
+    p = position * np.array([1, -1]).astype(dtype=int) + (WINDOW_SIZE * np.array([0.5, 1])).astype(dtype=int)
     return Point(p[0], p[1])
 
 

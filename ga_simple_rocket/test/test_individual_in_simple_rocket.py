@@ -18,13 +18,16 @@ class TestIndividualSimpleRocket(MyTest):
 
     def test_rocket_gone_high(self):
         self.individual.rocket.pos = MAX_ROCKET_HEIGHT + 1.0
+        self.individual.has_failed()
         self.individual.calculate_fitness(0, 100)
+        print(self.individual)
         self.assertIndividual(self.individual, fitness=1.0, has_failed=True)
 
     def test_rocket_has_landed(self):
         self.individual.rocket.pos = -0.0000034
         self.individual.rocket.vel = -0.0000076
         self.individual.rocket.acc = 0.00045
+        self.individual.has_landed()
         self.individual.calculate_fitness(0, 100)
         self.assertIndividual(self.individual, fitness=1.0, has_landed=True, has_failed=False)
 
@@ -39,6 +42,7 @@ class TestIndividualSimpleRocket(MyTest):
         while t < 100:
             self.individual.update(t)
             t += 1
+        print(self.individual)
         self.assertTrue(MAX_ROCKET_HEIGHT < self.individual.rocket.pos, 'rocket still moving')
         self.assertIndividual(self.individual, fitness=1.0, has_failed=True)
 

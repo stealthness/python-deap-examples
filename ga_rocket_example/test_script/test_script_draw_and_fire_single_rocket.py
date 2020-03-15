@@ -20,10 +20,11 @@ shape.draw(win)
 
 t = 0
 while t < MAX_TIME_INTERVALS:
-    dx, dy, dr = rocket.update([0, 1, 0])
+    time.sleep(0.1)
+    dx, dy, dr = rocket.update([0, 1, 1])
     print(rocket.pos)
-    rotate_rocket_shape(shape,convert_position_point(rocket.pos), dr)
-    shape.move(dx, dy)
+    rotate_rocket_shape(shape, convert_position_point(rocket.pos), dr)
+    shape.move(dx, -dy)
     t += 1
 
 get_ground_and_sky_limit(win)

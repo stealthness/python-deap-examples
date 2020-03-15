@@ -1,15 +1,34 @@
 """
 This file holds the class Individual
 """
-import math
-from copy import deepcopy
 from random import random
-import numpy as np
 
-from ga_rocket_example import config
 from ga_simple_rocket.config import *
-from ga_simple_rocket.functions import fitness_function_simple
 from ga_simple_rocket.simple_rocket_class import SimpleRocket
+
+
+def fitness_function_simple(rocket, t, max_t) -> float:
+    """
+    Calculates the the fitness of the rocket position from the target location
+        if rocket has failed:
+            then fitness is 1.0
+        if rocket has succeeded:
+            then fitness will be 0.0 + relative time taken
+            relative time will be  1.0 - t / max_time
+    :param: time
+    :param: max time allowed
+    :return: fitness of the individual
+    """
+    if rocket.has_failed:
+        fitness = 1.0
+    elif rocket.has_landed:
+        if t == 0:
+            fitness = 0.0
+        else:
+            fitness = 1.0 - t / max_t
+    else:
+        fitness = 1.0 - t / max_t
+    return fitness
 
 
 class Individual:
@@ -23,7 +42,7 @@ class Individual:
     def __init__(self, name, **kwargs):
         self.rocket = SimpleRocket(name, **kwargs)
         self.fitness: float = 1.0
-        self.fitness_function = fitness_function_simple()
+        self.fitness_function = fitness_function_simple
         self.target: float = GROUND_LEVEL
         self.commands = []
         self.generate_commands()
@@ -34,7 +53,7 @@ class Individual:
         return self
 
     def __next__(self):
-        if self.n > len[self.commands]:
+        if self.n > len([self.commands]):
             raise StopIteration
         self.n += 1
         return self.commands[self.n]
@@ -70,32 +89,14 @@ class Individual:
             else:
                 self.rocket.engine_on = False
             ds = self.rocket.update()
+        self.has_failed()
+        self.has_landed()
         self.calculate_fitness(t, self.max_time)
         return ds, self.fitness
 
     def calculate_fitness(self, t: int, max_t=MAX_TIME_INTERVALS) -> float:
-        # """
-        # Calculates the the fitness of the rocket position from the target location
-        #     if rocket has failed:
-        #         then fitness is 1.0
-        #     if rocket has succeeded:
-        #         then fitness will be 0.0 + relative time taken
-        #         relative time will be  1.0 - t / max_time
-        # :param: time
-        # :param: max time allowed
-        # :return: fitness of the individual
-        # """
-        # if self.rocket.has_failed():
-        #     self.rocket.fitness = 1.0
-        # elif self.rocket.has_landed():
-        #     if t == 0:
-        #         self.rocket.fitness = 0.0
-        #     else:
-        #         self.rocket.fitness = 1.0 - t / max_t
-        # else:
-        #     self.rocket.fitness = 1.0 - t / max_t
-        # return self.rocket.fitness
-        return self.fitness_function(self.rocket, t, max_t)
+        self.fitness = self.fitness_function(self.rocket, t, max_t)
+        return self.fitness
 
     def has_failed(self) -> bool:
         """
@@ -105,10 +106,10 @@ class Individual:
         if self.rocket.pos >= MAX_ROCKET_HEIGHT:  # check rocket height
             self.rocket.self_destruct()
             return True
-        elif config.GROUND_LEVEL - TOL > self.rocket.pos:  # check ground level
+        elif GROUND_LEVEL - TOL > self.rocket.pos:  # check ground level
             self.rocket.self_destruct()
             return True
-        elif config.GROUND_LEVEL - TOL < self.rocket.pos <= config.GROUND_LEVEL + TOL and -TOL < self.rocket.vel < TOL:
+        elif GROUND_LEVEL - TOL < self.rocket.pos <= GROUND_LEVEL + TOL and -TOL < self.rocket.vel < TOL:
             self.rocket.complete_landing()
             return False
         else:
@@ -116,7 +117,7 @@ class Individual:
 
     def has_landed(self) -> bool:
         HEIGHT_TOL = 10
-        if self.rocket.pos < config.GROUND_LEVEL + HEIGHT_TOL and -HEIGHT_TOL < self.rocket.vel < HEIGHT_TOL:
+        if self.rocket.pos < GROUND_LEVEL + HEIGHT_TOL and -HEIGHT_TOL < self.rocket.vel < HEIGHT_TOL:
             self.rocket.has_landed = True
             return True
 

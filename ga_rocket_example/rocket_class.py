@@ -56,7 +56,7 @@ class Rocket:
             self.check_in_area()
 
             # return the change in position
-            self.logger.debug(f'pos: {self.pos}, vel: {self.vel}, acc {self.acc}')
+            self.logger.debug(f'pos: {self.pos}, vel: {self.vel}, acc {self.acc}, dir:{self.dir}')
         return dx, dy, dr
 
     def check_in_area(self):
@@ -86,13 +86,14 @@ class Rocket:
         """
         Calculates the change in acceleration
         """
-        new_acceleration = self.acc.copy()
         if self.main_engine_on:
-            rocket_acc = np.array([np.sin(self.dir), np.cos(self.dir)]) * self.main_engine_max_force
-            new_acceleration = GRAVITY + rocket_acc
+            print(np.array([np.sin(self.dir), np.cos(self.dir)]))
+            theta = self.dir / (2*np.pi)
+            rocket_acc = np.array([np.sin(theta), np.cos(theta)]) * self.main_engine_max_force
+            self.acc = GRAVITY + rocket_acc
         else:
-            new_acceleration = GRAVITY
-        return new_acceleration
+            self.acc = GRAVITY
+        return self.acc
 
     def calculate_new_direction(self, command):
         """
@@ -101,14 +102,26 @@ class Rocket:
         """
         if command[0] == 1 and command[2] == 0:
             self.logger.debug(f'Fire left engine')
-            self.dir += ROCKET_ROTATIONAL_ENGINE_FORCE
+            self.dir -= ROCKET_ROTATIONAL_ENGINE_FORCE
             return ROCKET_ROTATIONAL_ENGINE_FORCE
         elif command[0] == 0 and command[2] == 1:
             self.logger.debug(f'Fire left engine')
-            self.dir -= ROCKET_ROTATIONAL_ENGINE_FORCE
+            self.dir += ROCKET_ROTATIONAL_ENGINE_FORCE
             return -ROCKET_ROTATIONAL_ENGINE_FORCE
         else:
             return 0
+
+    def set(self, **kwargs):
+        if 'name' in kwargs:
+            self.name = kwargs['name']
+        if 'pos' in kwargs:
+            self.pos = kwargs['pos']
+        if 'vel' in kwargs:
+            self.vel = kwargs['vel']
+        if 'dir' in kwargs:
+            self.dir = kwargs['dir'] % 360
+        if 'acc' in kwargs:
+            self.acc = kwargs['acc']
 
     # DEBUG TOOLS
 

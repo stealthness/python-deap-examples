@@ -142,25 +142,4 @@ def mutate_individual(individual: Individual, indpb: float):
     return individual,
 
 
-def fitness_function_simple(rocket, t, max_t) -> float:
-    """
-    Calculates the the fitness of the rocket position from the target location
-        if rocket has failed:
-            then fitness is 1.0
-        if rocket has succeeded:
-            then fitness will be 0.0 + relative time taken
-            relative time will be  1.0 - t / max_time
-    :param: time
-    :param: max time allowed
-    :return: fitness of the individual
-    """
-    if rocket.has_failed():
-        rocket.fitness = 1.0
-    elif rocket.has_landed():
-        if t == 0:
-            rocket.fitness = 0.0
-        else:
-            rocket.fitness = 1.0 - t / max_t
-    else:
-        rocket.fitness = 1.0 - t / max_t
-    return rocket.fitness
+

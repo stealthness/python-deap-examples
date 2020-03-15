@@ -36,11 +36,14 @@ class MyTest(unittest.TestCase):
             self.assertAlmostEqual(kwargs['exp_vel'], rocket.vel,
                                    delta=TOL, msg=f'exp:{kwargs["exp_pos"]}, act:{rocket.pos}')
         if 'exp_acc' in kwargs:
-            self.assertEqual(kwargs['exp_acc'], rocket.acc, 'acc')
+            self.assertAlmostEqual(kwargs['exp_acc'], rocket.acc, 'acc',
+                                    delta=TOL, msg=f'exp:{kwargs["exp_acc"]}, act:{rocket.pos}')
         if 'has_failed' in kwargs:
-            self.assertEqual(kwargs['has_failed'], rocket.has_failed)
+            self.assertEqual(kwargs['has_failed'], rocket.has_failed,
+                             msg=f'has_failed -> exp:{kwargs["has_failed"]}, act:{rocket.has_failed}')
         if 'has_landed' in kwargs:
-            self.assertEqual(kwargs['has_landed'], rocket.has_landed)
+            self.assertEqual(kwargs['has_landed'], rocket.has_landed,
+                             msg=f'has_landed -> exp:{kwargs["has_landed"]}, act:{rocket.has_landed}')
 
     def assertRocket(self, rocket, **kwargs):
         """
@@ -85,7 +88,6 @@ class MyTest(unittest.TestCase):
             rocket.pos = kwargs['has_landed']
         if 'has_failed' in kwargs:
             rocket.pos = kwargs['has_failed']
-
 
     def set_individual(self, individual, **kwargs):
         self.set_rocket(individual, **kwargs)

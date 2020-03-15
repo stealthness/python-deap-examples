@@ -8,28 +8,29 @@ from ga_rocket_example.test.test_functions import MyTest  # extends unittest
 
 TOL = 0.0001
 
+ZERO = np.array([0.0, 0.0])
+GRAVITY = np.array([0.0, -9.8])
 
 class MyTestCase(MyTest):
 
     def test_init_rocket_at_rest(self):
         rocket = Rocket('Test')
-        self.assertRocket(rocket, exp_pos=np.array([0.0, 40.0]), err_msg=f'exp_pos: {np.array([0.0, 40.0])}, act_pos:{rocket.pos}')
+        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=GRAVITY)
 
-        np.testing.assert_allclose(np.array([0.0, 40.0]), rocket.pos, err_msg="pos")
-        np.testing.assert_allclose(np.array([0.0, 0.0]), rocket.vel, err_msg="vel")
-        np.testing.assert_allclose(np.array([0.0, 0.0]), rocket.acc, err_msg="acc", rtol=TOL, atol=TOL)
-        self.assertTrue(True)
+    def test_init_rocket_at_100_with_initial_velocity(self):
+        rocket = Rocket('Test')
+        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=GRAVITY)
 
     def test_rocket_in_equilibrium(self):
         rocket = Rocket('Test')
+        rocket.main_engine_on = True
         rocket.main_engine_max_force = 9.8
         for i in range(10):
-            rocket.update([0,1,0])
+            rocket.update([0, 1, 0])
+            self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=ZERO, err_msg=f'i:{i}, ')
 
-        np.testing.assert_allclose(np.array([0.0, 40.0]), rocket.pos, err_msg="pos")
-        np.testing.assert_allclose(np.array([0.0, 0.0]), rocket.vel, err_msg="vel")
-        np.testing.assert_allclose(np.array([0.0, 0.0]), rocket.acc, err_msg="acc", rtol=TOL, atol=TOL)
-        self.assertTrue(True)
+        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]),  exp_vel=ZERO, exp_acc=ZERO,
+                          err_msg=f'final:, ')
 
 
 if __name__ == '__main__':
