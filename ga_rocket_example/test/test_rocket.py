@@ -13,6 +13,9 @@ GRAVITY = np.array([0.0, -9.8])
 
 class MyTestCase(MyTest):
 
+    def setUp(self):
+        self.r = Rocket('test')
+
     def test_init_rocket_at_rest(self):
         rocket = Rocket('Test')
         self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=GRAVITY, exp_dir=0)
@@ -31,6 +34,10 @@ class MyTestCase(MyTest):
 
         self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]),  exp_vel=ZERO, exp_acc=ZERO, exp_dir=0,
                           err_msg=f'final:, ')
+
+    def test_ds_change_in_pos(self):
+
+        self.assertRocket(self.r, exp_ds='bob', exp_pos=ZERO, err_msg='test')
 
 
 if __name__ == '__main__':

@@ -28,7 +28,14 @@ class Rocket:
     def __str__(self):
         return self.name
 
-    def update(self, command) -> np.array:
+    def update(self, command=None) -> np.array:
+        """
+        Updates the rockets pos, vel, acc, and dir based on commands give. default command is [0, 0, 0] \n
+        :param command: Determins which rockets are being fired
+        :return: (dx, dy, dr) the change in pos, and dir
+        """
+        if command is None:
+            command = [0, 0, 0]
         if self.has_failed:
             self.logger.debug(f'No update - Rocket has exploded')
             return 0.0, 0.0, 0
