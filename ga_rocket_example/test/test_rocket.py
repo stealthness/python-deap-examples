@@ -15,11 +15,11 @@ class MyTestCase(MyTest):
 
     def test_init_rocket_at_rest(self):
         rocket = Rocket('Test')
-        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=GRAVITY)
+        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=GRAVITY, exp_dir=0)
 
     def test_init_rocket_at_100_with_initial_velocity(self):
         rocket = Rocket('Test')
-        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=GRAVITY)
+        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=GRAVITY, exp_dir=0)
 
     def test_rocket_in_equilibrium(self):
         rocket = Rocket('Test')
@@ -29,7 +29,7 @@ class MyTestCase(MyTest):
             rocket.update([0, 1, 0])
             self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]), exp_vel=ZERO, exp_acc=ZERO, err_msg=f'i:{i}, ')
 
-        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]),  exp_vel=ZERO, exp_acc=ZERO,
+        self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]),  exp_vel=ZERO, exp_acc=ZERO, exp_dir=0,
                           err_msg=f'final:, ')
 
 
