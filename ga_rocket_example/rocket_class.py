@@ -35,7 +35,8 @@ class Rocket:
         :return: (dx, dy, dr) the change in pos, and dir
         """
         if command is None:
-            command = [0, 0, 0]
+            command = [0, self.main_engine_on, 0]
+
         if self.has_failed:
             self.logger.debug(f'No update - Rocket has exploded')
             return 0.0, 0.0, 0

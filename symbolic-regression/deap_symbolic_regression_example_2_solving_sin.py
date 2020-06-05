@@ -4,6 +4,7 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 from deap import algorithms, base, creator, tools, gp
+from utils import protectedDiv
 
 # Set Parameters (default values in comments)
 # MAX_GEN = 100
@@ -19,19 +20,11 @@ POINTS = [math.pi*x/10 for x in range(-10, 10)]
 ADJ = 0.1*math.pi
 random.seed(318)
 
-# Set function want to find
 
-# Defince the expected function
+# Set function want to find
+# Define the expected function
 def exp_function(x):
     return math.sin(x)
-
-
-# Define new functions
-def protected_div(left, right):
-    try:
-        return left / right
-    except ZeroDivisionError:
-        return 1
 
 
 # Set our constants(terminals) and primitives(functions) set
@@ -39,7 +32,7 @@ pset = gp.PrimitiveSet("MAIN", 1)
 pset.addPrimitive(operator.add, 2)
 pset.addPrimitive(operator.sub, 2)
 pset.addPrimitive(operator.mul, 2)
-pset.addPrimitive(protected_div, 2, name="div")
+pset.addPrimitive(protectedDiv, 2, name="div")
 pset.addPrimitive(operator.neg, 1)
 pset.addEphemeralConstant("randfactorial", lambda: math.factorial(random.randint(0, 7)))
 pset.renameArguments(ARG0='x')

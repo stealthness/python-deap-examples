@@ -4,12 +4,10 @@ Testing the Rocket class
 import unittest
 import numpy as np
 from ga_rocket_example.rocket_class import Rocket
+from ga_rocket_example.test.config import *
 from ga_rocket_example.test.test_functions import MyTest  # extends unittest
 
-TOL = 0.0001
 
-ZERO = np.array([0.0, 0.0])
-GRAVITY = np.array([0.0, -9.8])
 
 class MyTestCase(MyTest):
 
@@ -35,9 +33,11 @@ class MyTestCase(MyTest):
         self.assertRocket(rocket, exp_pos=np.array([0.0, 10.0]),  exp_vel=ZERO, exp_acc=ZERO, exp_dir=0,
                           err_msg=f'final:, ')
 
-    def test_ds_change_in_pos(self):
+    def test_ds_change_in_dr(self):
+        self.assertRocket(self.r, exp_dr=0, exp_pos=START_POS, err_msg='test')
 
-        self.assertRocket(self.r, exp_ds='bob', exp_pos=ZERO, err_msg='test')
+    def test_ds_change_in_dr_to_10(self):
+        self.assertRocket(self.r, exp_dr=10, exp_pos=START_POS, err_msg='test')
 
 
 if __name__ == '__main__':

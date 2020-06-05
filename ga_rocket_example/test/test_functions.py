@@ -32,7 +32,7 @@ class MyTest(unittest.TestCase):
             np.testing.assert_allclose(kwargs['exp_dir'], rocket.dir,
                                        err_msg=f'{kwargs["err_msg"]}, exp_dir: {kwargs["exp_dir"]}, act_dir:{rocket.dir}')
 
-        if ['exp_ds'] in kwargs:
+        if 'exp_dr' in kwargs:
             dx, dy, dr = rocket.update()
             self.assertEqual(kwargs['exp_dr'], dr)
 
