@@ -46,6 +46,7 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
+
 def evalSymbReg(individual, points):
     # Transform the tree expression in a callable function
     evl_func = toolbox.compile(expr=individual)

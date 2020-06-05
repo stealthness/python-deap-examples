@@ -2,6 +2,7 @@
 This file has common functions
 """
 # Define new functions
+import math
 
 
 def protectedDiv(numerator, denominator,):
@@ -20,4 +21,3 @@ def protectedDiv(numerator, denominator,):
             return 1.0
 
 
-print('utils')
