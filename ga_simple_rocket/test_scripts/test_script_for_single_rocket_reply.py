@@ -13,11 +13,17 @@ d = Bunch()
 d.name = 'r0'
 d.data = []
 
+# create commands
+commands_freefall = [0] * MAX_TIME_INTERVALS
+commands_fullacc = [1] * MAX_TIME_INTERVALS
+commands_up_and_down = [1] * (MAX_TIME_INTERVALS//4) + [0, 0, 0] * (MAX_TIME_INTERVALS//4)
+
 # creating an individual and initial rocket data
 individual = Individual('r0')
 individual.rocket.pos = 200
-individual.rocket.engine_force = 10
+individual.rocket.engine_force = 20
 individual.rocket.engine_on = False
+individual.commands = commands_freefall
 info = {'time': 0, 'ds': 0.0, 'pos': individual.rocket.pos, 'vel': individual.rocket.vel, 'acc': individual.rocket.acc}
 info.update({'failed': False, 'landed': False})
 d.data.append(info)

@@ -10,17 +10,21 @@ from ga_simple_rocket.config import MAX_TIME_INTERVALS
 from ga_simple_rocket.functions import reply_multiple_rocket
 from ga_simple_rocket.individual_class import Individual
 
+#constants
 number_of_rockets = 5
+starting_hieght = 200
 
 # creating a Bunch object to store individuals details
 b = Bunch()
 b.names = []
 b.individuals = []
 b.data = []
+
+# intialising bunch object
 for i in range(number_of_rockets):
     b.names.append(f'r{i}')
     b.individuals.append(Individual(f'r{i}'))
-    b.individuals[i].rocket.pos = 200
+    b.individuals[i].rocket.pos = starting_hieght
     b.data.append([])
 
     info = {'time': 0, 'ds': 0.0}
@@ -28,7 +32,9 @@ for i in range(number_of_rockets):
     info.update({'failed': False, 'landed': False})
     b.data[i].append(info)
 
+# iterate for each rocket
 for i in range(number_of_rockets):
+    # iterate over the max time range for each rocket
     for t in range(MAX_TIME_INTERVALS):
         ds, fitness = b.individuals[i].update(t)
 
