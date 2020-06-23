@@ -5,6 +5,7 @@ import unittest
 
 from ga_simple_rocket.config import *
 from ga_simple_rocket.individual_class import Individual
+from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
 class MyTest(unittest.TestCase):
@@ -25,8 +26,10 @@ class MyTest(unittest.TestCase):
                 self.assertAlmostEqual(kwargs['fitness'], test_item.fitness,
                                        delta=TOL, msg=f'exp:{kwargs["fitness"]}, act:{kwargs["fitness"]}')
             rocket = test_item.rocket
-        else:
+        elif type(test_item) is SimpleRocket:
             rocket = test_item
+        else:
+            raise Exception(f'type:{type(test_item)} not allowed')
         if 'exp_name' in kwargs:
             self.assertEqual(kwargs['exp_name'], rocket.name, msg=f'exp:{kwargs["exp_name"]}, act:{rocket.name}')
         if 'exp_pos' in kwargs:
@@ -36,7 +39,7 @@ class MyTest(unittest.TestCase):
             self.assertAlmostEqual(kwargs['exp_vel'], rocket.vel,
                                    delta=TOL, msg=f'exp:{kwargs["exp_pos"]}, act:{rocket.pos}')
         if 'exp_acc' in kwargs:
-            self.assertAlmostEqual(kwargs['exp_acc'], rocket.acc, 'acc',
+            self.assertAlmostEqual(kwargs['exp_acc'], rocket.acc,
                                     delta=TOL, msg=f'exp:{kwargs["exp_acc"]}, act:{rocket.pos}')
         if 'has_failed' in kwargs:
             self.assertEqual(kwargs['has_failed'], rocket.has_failed,

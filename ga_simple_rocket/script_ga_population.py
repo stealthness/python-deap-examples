@@ -89,3 +89,7 @@ while max(fits) > 0.0 and g < 100:
 
     for x in range(5, 10):
         print('l')
+
+    for ind in pop:
+        print(f'fitness:{ind.fitness}')
+    print()
