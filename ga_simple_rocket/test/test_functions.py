@@ -9,7 +9,6 @@ from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
 class MyTest(unittest.TestCase):
-
     TOL: float = 0.0001
 
     def assertTestItem(self, test_item, **kwargs):
@@ -30,20 +29,26 @@ class MyTest(unittest.TestCase):
             rocket = test_item
         else:
             raise Exception(f'type:{type(test_item)} not allowed')
+        # expected name test
         if 'exp_name' in kwargs:
             self.assertEqual(kwargs['exp_name'], rocket.name, msg=f'exp:{kwargs["exp_name"]}, act:{rocket.name}')
+        # expected position test
         if 'exp_pos' in kwargs:
             self.assertAlmostEqual(kwargs['exp_pos'], rocket.pos,
                                    delta=TOL, msg=f'exp:{kwargs["exp_pos"]}, act:{rocket.pos}')
+        # expected velocity test
         if 'exp_vel' in kwargs:
             self.assertAlmostEqual(kwargs['exp_vel'], rocket.vel,
                                    delta=TOL, msg=f'exp:{kwargs["exp_pos"]}, act:{rocket.pos}')
+        # expected acceleration test
         if 'exp_acc' in kwargs:
             self.assertAlmostEqual(kwargs['exp_acc'], rocket.acc,
-                                    delta=TOL, msg=f'exp:{kwargs["exp_acc"]}, act:{rocket.pos}')
+                                   delta=TOL, msg=f'exp:{kwargs["exp_acc"]}, act:{rocket.pos}')
+        # expected has_failed test
         if 'has_failed' in kwargs:
             self.assertEqual(kwargs['has_failed'], rocket.has_failed,
                              msg=f'has_failed -> exp:{kwargs["has_failed"]}, act:{rocket.has_failed}')
+        # expected has_landed test
         if 'has_landed' in kwargs:
             self.assertEqual(kwargs['has_landed'], rocket.has_landed,
                              msg=f'has_landed -> exp:{kwargs["has_landed"]}, act:{rocket.has_landed}')
