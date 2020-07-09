@@ -44,6 +44,9 @@ class MyTest(unittest.TestCase):
         if 'has_landed' in kwargs:
             self.assertEqual(kwargs['has_landed'], rocket.has_landed,
                              msg=f'has_landed -> exp:{kwargs["has_landed"]}, act:{rocket.has_landed}')
+        if 'exp_target' in kwargs:
+            self.assertEqual(kwargs['exp_target'], rocket.target,
+                             msg=f'target -> exp:{kwargs["has_landed"]}, act:{rocket.has_landed}')
 
     def assertRocket(self, rocket, **kwargs):
         """
@@ -69,7 +72,6 @@ class MyTest(unittest.TestCase):
 
     def set_rocket(self, test_item, **kwargs):
         """
-
         :param test_item:
         :param kwargs:
         :return:

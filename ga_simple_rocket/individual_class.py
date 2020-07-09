@@ -47,6 +47,7 @@ class Individual:
         self.commands = []
         self.generate_commands()
         self.max_time = MAX_TIME_INTERVALS
+        self.TOL = TOL
 
     def __iter__(self):
         self.n = 0
@@ -89,8 +90,11 @@ class Individual:
             else:
                 self.rocket.engine_on = False
             ds = self.rocket.update()
-        self.has_failed()
-        self.has_landed()
+            print(f'DS:{ds}')
+
+        if not self.has_failed():
+            # if not crashed we test if it has landed
+            self.has_landed()
         self.calculate_fitness(t, self.max_time)
         return ds, self.fitness
 
@@ -115,9 +119,9 @@ class Individual:
         else:
             return False
 
+
     def has_landed(self) -> bool:
-        HEIGHT_TOL = 10
-        if self.rocket.pos < GROUND_LEVEL + HEIGHT_TOL and -HEIGHT_TOL < self.rocket.vel < HEIGHT_TOL:
+        if self.rocket.pos < GROUND_LEVEL + self.TOL and - self.TOL < self.rocket.vel < self.TOL:
             self.rocket.has_landed = True
             return True
 
