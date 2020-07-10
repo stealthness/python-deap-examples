@@ -10,6 +10,10 @@ class IntMouse:
         self.x = 0
         self.y = 0
         self.default_movement = default_movement
+        self.commands = []
+
+    def __str__(self):
+        return f'name:{self.name}\npos:{self.get_pos()}\ncommands:{self.commands}'
 
     def get_pos(self) -> tuple:
         """
@@ -27,3 +31,5 @@ class IntMouse:
             self.y += self.default_movement
         if command == 'down':
             self.y -= self.default_movement
+
+

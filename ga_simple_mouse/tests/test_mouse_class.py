@@ -27,6 +27,11 @@ class TestIntMouse(TestCase):
         self.mouse0.move('down')
         self.assert_mouse_position(0, -1, self.mouse0.get_pos(), msg='move down')
 
+    def test_initial_mouse0_str(self):
+        exp_output = 'name:m0\npos:(0, 0)\ncommands:[]'
+        self.assertEqual(exp_output, str(self.mouse0))
+
+
     # misc test
 
     def test_assert(self):
