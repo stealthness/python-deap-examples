@@ -31,3 +31,28 @@ class TestIntMouse(TestCase):
         self.mouse0.move('down')
         self.assertEqual(0, self.mouse0.x, f'mouse x:{self.mouse0.x}')
         self.assertEqual(-1, self.mouse0.y, f'mouse y:{self.mouse0.y}')
+
+    def test_assert(self):
+        self.assert_mouse_position(0, 0, (0, 0), msg="0")
+        self.assert_mouse_position(0, 1, (0, 1), msg="1")
+        self.assert_mouse_position(1, 0, (1, 0), msg="2")
+        self.assert_mouse_position(1, 1, (1, 1), msg="3")
+
+    # Assert functions
+
+    def assert_mouse_position(self, exp_x: int, exp_y: int, pos: tuple, **kwargs):
+        """
+        Assert the position of a mouse
+        :param exp_x:
+        :param exp_y:
+        :param pos:
+        :param kwargs:
+        :return:
+        """
+        err_msg = ''
+        if kwargs == 'msg':
+            err_msg = kwargs['msg']
+        if exp_x is not None:
+            self.assertEqual(exp_x, pos[0], f'{err_msg} : exp_x:{exp_x}')
+        if exp_y is not None:
+            self.assertEqual(exp_y, pos[1], f'{err_msg} : exp_y:{exp_x}')
