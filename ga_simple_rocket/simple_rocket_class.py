@@ -22,6 +22,10 @@ class SimpleRocket:
         return f'name:{self.name}, pos:{self.pos}, vel:{self.vel}, acc:{self.acc} \n landed:{self.has_landed}, crashed:{self.has_failed}'
 
     def update(self):
+        """
+        Updates the the rockets pos, vel, acc
+        :return:
+        """
         if not self.has_landed and not self.has_failed:
             delta_time = 1.0 / float(config.TIME_INTERVALS)
             # update acc
@@ -46,12 +50,20 @@ class SimpleRocket:
             return 0.0
 
     def self_destruct(self):
+        """
+        destroys the rocket, has_failed set to True
+        :return:
+        """
         self.vel = 0.0
         self.acc = 0.0
         self.engine_on = False
         self.has_failed = True
 
     def complete_landing(self):
+        """
+        successful landing, has_landed set to True
+        :return:
+        """
         self.vel = 0.0
         self.acc = 0.0
         self.engine_on = False

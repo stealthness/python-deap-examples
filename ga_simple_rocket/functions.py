@@ -12,6 +12,12 @@ from ga_simple_rocket.simple_rocket_class import SimpleRocket
 
 
 def get_rocket_shape(point) -> Polygon:
+    """
+    Returns a rocket polygon shape based on a rockets point position.
+    Note that screen position has 0,0 in top left hand corner. max position in bottom right
+    :param point:
+    :return: Polygon shape
+    """
     point.move(0, -ROCKET_SIZE)
     tip = point
     bottom_left = Point(point.x + ROCKET_SIZE//2, point.y + ROCKET_SIZE)
@@ -23,6 +29,12 @@ def get_rocket_shape(point) -> Polygon:
 
 
 def set_rocket_color(rocket: SimpleRocket, shape):
+    """
+    Changed the color to represent the rockets state
+    :param rocket:
+    :param shape:
+    :return:
+    """
     if rocket.has_failed:
         shape.setFill('red')
     elif rocket.has_landed:
@@ -34,6 +46,11 @@ def set_rocket_color(rocket: SimpleRocket, shape):
 
 
 def get_ground_and_sky_limit(win):
+    """
+    Sets simple red line to deliminate the the ground and sky limit
+    :param win:
+    :return:
+    """
     y = win.getHeight() - WIN_ADJUST
     line = Line(Point(0, y), Point(win.getWidth(), y))
     line.draw(win)
