@@ -30,7 +30,16 @@ class TestIntMouse(TestCase):
     def test_initial_mouse0_str(self):
         exp_output = 'name:m0\npos:(0, 0)\ncommands:[]'
         self.assertEqual(exp_output, str(self.mouse0))
+        self.mouse0.commands = [1, 1, 1, 1]
+        exp_output = 'name:m0\npos:(0, 0)\ncommands:[1, 1, 1, 1]'
+        self.assertEqual(exp_output, str(self.mouse0))
 
+
+    def test_mouse_iter(self):
+        self.mouse0.commands = [0, 1, 2, 3]
+        for cmd in self.mouse0:
+            print(self.mouse0.commands)
+            print(cmd)
 
     # misc test
 
