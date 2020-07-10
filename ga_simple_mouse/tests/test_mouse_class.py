@@ -11,6 +11,7 @@ class TestIntMouse(TestCase):
     def test_initial_IntMouse_has_default_0_0(self):
         self.assertEqual(0, self.mouse0.x, f'mouse x:{self.mouse0.x}')
         self.assertEqual(0, self.mouse0.y, f'mouse y:{self.mouse0.y}')
+        self.assert_mouse_position(0, 0, self.mouse0.get_pos(), msg='test mouse at initial position')
 
     def test_m0_move_to_the_left_by_1(self):
         self.mouse0.move('left')
@@ -31,6 +32,8 @@ class TestIntMouse(TestCase):
         self.mouse0.move('down')
         self.assertEqual(0, self.mouse0.x, f'mouse x:{self.mouse0.x}')
         self.assertEqual(-1, self.mouse0.y, f'mouse y:{self.mouse0.y}')
+
+    # misc test
 
     def test_assert(self):
         self.assert_mouse_position(0, 0, (0, 0), msg="0")

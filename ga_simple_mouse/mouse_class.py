@@ -11,6 +11,13 @@ class IntMouse:
         self.y = 0
         self.default_movement = default_movement
 
+    def get_pos(self) -> tuple:
+        """
+        Returns the the mouse position as a tuple
+        :return:
+        """
+        return self.x, self.y
+
     def move(self, command: str):
         if command == 'right':
             self.x += self.default_movement
